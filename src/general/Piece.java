@@ -8,17 +8,12 @@ public abstract class Piece
 	private Color color;
 	private Side side;
 	
-	public Piece()
-	{
-		this(Side.TOP, Color.WHITE);
-	}
-	
 	public Piece(Side s, Color c)
 	{
 		this(s, c, ' ');
 	}
 	
-	public Piece(Side s, Color c, char ic)
+	protected Piece(Side s, Color c, char ic)
 	{
 		icon = ic;
 		color = c;
