@@ -22,6 +22,13 @@ public class CheckerPiece extends Piece
 	
 	public boolean canMove(Piece[][] board, int[] current, int[] moveTo) 
 	{
-		return false;
+		try
+		{
+			
+		}
+		catch(ArrayIndexOutOfBoundsException e)
+		{
+			return false;
+		}
 	}
 }
