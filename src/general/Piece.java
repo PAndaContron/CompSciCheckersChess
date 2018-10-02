@@ -1,6 +1,7 @@
 package general;
 
 import java.awt.Color;
+import java.util.List;
 
 public abstract class Piece 
 {
@@ -35,5 +36,5 @@ public abstract class Piece
 		return side;
 	}
 	
-	abstract public boolean canMove(Piece[][] board, int[] current, int[] moveTo);
+	abstract public List<int[]> getMoves(Piece[][] board, int[] current);
 }
