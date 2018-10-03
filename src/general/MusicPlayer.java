@@ -20,7 +20,7 @@ public class MusicPlayer {
 	
 	public static void main(String[] args)
 	{
-		playMusic("C:/Users/120ldaniels/Downloads/music/nggyu.wav");
+		playMusic("checkersbgm/opus.wav");
 	}
 
 	public static void playMusic(String filename) {
