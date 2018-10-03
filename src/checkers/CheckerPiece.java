@@ -26,7 +26,7 @@ public class CheckerPiece extends Piece
 	private boolean isKing;
 	private List<int[]> curDiagonals = diagonals;
 	
-	public CheckerPiece(Color c, Side s)
+	public CheckerPiece(Side s, Color c)
 	{
 		super(s, c);
 	}
