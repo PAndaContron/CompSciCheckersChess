@@ -36,5 +36,10 @@ public abstract class Piece
 		return side;
 	}
 	
+	public String toString()
+	{
+		return ""+icon;
+	}
+	
 	abstract public List<int[]> getMoves(Piece[][] board, int[] current);
 }

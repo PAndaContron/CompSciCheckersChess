@@ -1,5 +1,8 @@
 package general;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class Utils
 {
 	public static int[] add(int[] a, int[] b)
@@ -29,5 +32,13 @@ public class Utils
 		}
 		
 		return c;
+	}
+	
+	public static boolean containsArray(List<int[]> list, int[] arr)
+	{
+		for(int[] row : list)
+			if(Arrays.equals(row, arr))
+				return true;
+		return false;
 	}
 }

@@ -80,6 +80,7 @@ public class CheckerPiece extends Piece
 				{
 					board[coords[0]][coords[1]] = null;
 					List<int[]> doubles = getCaptures(board, nextCoords);
+					board[coords[0]][coords[1]] = p;
 					if(doubles.isEmpty())
 						captures.add(nextCoords);
 					else
