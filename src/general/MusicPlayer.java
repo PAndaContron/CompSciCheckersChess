@@ -2,13 +2,16 @@ package general;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Scanner;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class MusicPlayer {
 
@@ -20,7 +23,10 @@ public class MusicPlayer {
 	
 	public static void main(String[] args)
 	{
-		playMusic("checkersbgm/opus.wav");
+		Scanner scan = new Scanner(System.in);
+		playMusicAsync("checkersbgm/opus.wav");
+		scan.nextLine();
+		scan.close();
 	}
 
 	public static void playMusic(String filename) {
@@ -77,5 +83,30 @@ public class MusicPlayer {
 
 		sourceLine.drain();
 		sourceLine.close();
+	}
+	
+	public static void playMusicAsync(String filename)
+	{
+		File audioFile = new File(filename);
+		 
+        try {
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
+            AudioFormat format = audioStream.getFormat();
+            DataLine.Info info = new DataLine.Info(Clip.class, format);
+            Clip audioClip = (Clip) AudioSystem.getLine(info);
+            audioClip.open(audioStream);
+            audioClip.start();
+        } catch (UnsupportedAudioFileException ex) {
+            System.out.println("The specified audio file is not supported.");
+            ex.printStackTrace();
+        } catch (LineUnavailableException ex) {
+            System.out.println("Audio line for playing back is unavailable.");
+            ex.printStackTrace();
+        } catch (IOException ex) {
+            System.out.println("Error playing the audio file.");
+            ex.printStackTrace();
+        }
+        
+        System.out.println("Method finished");
 	}
 }
