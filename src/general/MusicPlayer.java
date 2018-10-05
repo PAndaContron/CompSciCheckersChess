@@ -2,7 +2,6 @@ package general;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Scanner;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -23,10 +22,9 @@ public class MusicPlayer {
 	
 	public static void main(String[] args)
 	{
-		Scanner scan = new Scanner(System.in);
-		playMusicAsync("checkersbgm/opus.wav");
-		scan.nextLine();
-		scan.close();
+		MusicPlayer opus = new MusicPlayer("checkersbgm/opus.wav");
+		opus.play();
+		while(opus.isPlaying());
 	}
 
 	public static void playMusic(String filename) {
@@ -108,5 +106,65 @@ public class MusicPlayer {
         }
         
         System.out.println("Method finished");
+	}
+	
+	private String filename;
+	private Clip clip;
+	
+	public MusicPlayer(String fileName)
+	{
+		setFileName(fileName);
+	}
+	
+	public boolean setFileName(String newFileName)
+	{
+		filename = newFileName;
+		try
+		{
+			File audioFile = new File(filename);
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
+            AudioFormat format = audioStream.getFormat();
+            DataLine.Info info = new DataLine.Info(Clip.class, format);
+            clip = (Clip) AudioSystem.getLine(info);
+            clip.open(audioStream);
+		}
+		catch(Exception e)
+		{
+			return false;
+		}
+		return true;
+	}
+	
+	public boolean isPlaying()
+	{
+		return clip.isActive();
+	}
+	
+	public void play()
+	{
+		play(1);
+	}
+	
+	public void play(int times)
+	{
+		clip.loop(times-1);
+		while(!isPlaying());
+	}
+	
+	public void loop()
+	{
+		clip.loop(Clip.LOOP_CONTINUOUSLY);
+		while(!isPlaying());
+	}
+	
+	public void pause()
+	{
+		clip.stop();
+	}
+	
+	public void stop()
+	{
+		pause();
+		clip.setMicrosecondPosition(0);
 	}
 }
