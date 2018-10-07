@@ -13,21 +13,22 @@ import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class MusicPlayer {
-
 	private final static int BUFFER_SIZE = 128000;
-	private static File soundFile;
-	private static AudioInputStream audioStream;
-	private static AudioFormat audioFormat;
-	private static SourceDataLine sourceLine;
 	
 	public static void main(String[] args)
 	{
-		MusicPlayer opus = new MusicPlayer("checkersbgm/opus.wav");
+		MusicPlayer opus = new MusicPlayer("checkersbgm/bandicoot.wav");
 		opus.play();
 		while(opus.isPlaying());
+		opus.close();
 	}
 
-	public static void playMusic(String filename) {
+	public static void playMusic(String filename)
+	{
+		File soundFile = null;
+		AudioInputStream audioStream = null;
+		AudioFormat audioFormat = null;
+		SourceDataLine sourceLine = null;
 
 		/**
 		 * @param filename
@@ -35,16 +36,22 @@ public class MusicPlayer {
 		 */
 		String strFilename = filename;
 
-		try {
+		try
+		{
 			soundFile = new File(strFilename);
-		} catch (Exception e) {
+		}
+		catch (Exception e)
+		{
 			e.printStackTrace();
 			System.exit(1);
 		}
 
-		try {
+		try
+		{
 			audioStream = AudioSystem.getAudioInputStream(soundFile);
-		} catch (Exception e) {
+		}
+		catch (Exception e)
+		{
 			e.printStackTrace();
 			System.exit(1);
 		}
@@ -52,13 +59,18 @@ public class MusicPlayer {
 		audioFormat = audioStream.getFormat();
 
 		DataLine.Info info = new DataLine.Info(SourceDataLine.class, audioFormat);
-		try {
+		try
+		{
 			sourceLine = (SourceDataLine) AudioSystem.getLine(info);
 			sourceLine.open(audioFormat);
-		} catch (LineUnavailableException e) {
+		}
+		catch (LineUnavailableException e)
+		{
 			e.printStackTrace();
 			System.exit(1);
-		} catch (Exception e) {
+		}
+		catch (Exception e)
+		{
 			e.printStackTrace();
 			System.exit(1);
 		}
@@ -67,13 +79,18 @@ public class MusicPlayer {
 
 		int nBytesRead = 0;
 		byte[] abData = new byte[BUFFER_SIZE];
-		while (nBytesRead != -1) {
-			try {
+		while (nBytesRead != -1)
+		{
+			try
+			{
 				nBytesRead = audioStream.read(abData, 0, abData.length);
-			} catch (IOException e) {
+			}
+			catch (IOException e)
+			{
 				e.printStackTrace();
 			}
-			if (nBytesRead >= 0) {
+			if (nBytesRead >= 0)
+			{
 				@SuppressWarnings("unused")
 				int nBytesWritten = sourceLine.write(abData, 0, nBytesRead);
 			}
@@ -87,20 +104,27 @@ public class MusicPlayer {
 	{
 		File audioFile = new File(filename);
 		 
-        try {
+        try
+        {
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
             AudioFormat format = audioStream.getFormat();
             DataLine.Info info = new DataLine.Info(Clip.class, format);
             Clip audioClip = (Clip) AudioSystem.getLine(info);
             audioClip.open(audioStream);
             audioClip.start();
-        } catch (UnsupportedAudioFileException ex) {
+        }
+        catch (UnsupportedAudioFileException ex)
+        {
             System.out.println("The specified audio file is not supported.");
             ex.printStackTrace();
-        } catch (LineUnavailableException ex) {
+        }
+        catch (LineUnavailableException ex)
+        {
             System.out.println("Audio line for playing back is unavailable.");
             ex.printStackTrace();
-        } catch (IOException ex) {
+        }
+        catch (IOException ex)
+        {
             System.out.println("Error playing the audio file.");
             ex.printStackTrace();
         }
@@ -110,6 +134,7 @@ public class MusicPlayer {
 	
 	private String filename;
 	private Clip clip;
+	private AudioInputStream audioStream;
 	
 	public MusicPlayer(String fileName)
 	{
@@ -118,21 +143,45 @@ public class MusicPlayer {
 	
 	public boolean setFileName(String newFileName)
 	{
+		if(clip != null && isOpen())
+			clip.close();
 		filename = newFileName;
 		try
 		{
 			File audioFile = new File(filename);
-            AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
+            audioStream = AudioSystem.getAudioInputStream(audioFile);
             AudioFormat format = audioStream.getFormat();
             DataLine.Info info = new DataLine.Info(Clip.class, format);
             clip = (Clip) AudioSystem.getLine(info);
-            clip.open(audioStream);
+            open();
 		}
 		catch(Exception e)
 		{
 			return false;
 		}
 		return true;
+	}
+	
+	public boolean isOpen()
+	{
+		return clip.isOpen();
+	}
+	
+	public void open()
+	{
+		try
+		{
+			clip.open(audioStream);
+		}
+		catch (LineUnavailableException | IOException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	public void close()
+	{
+		clip.close();
 	}
 	
 	public boolean isPlaying()
