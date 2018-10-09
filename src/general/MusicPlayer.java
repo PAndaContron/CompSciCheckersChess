@@ -17,7 +17,7 @@ public class MusicPlayer {
 	
 	public static void main(String[] args)
 	{
-		MusicPlayer audible = new MusicPlayer("checkersbgm/opus.wav");
+		MusicPlayer audible = new MusicPlayer("resources/sound/music/opus.wav");
 		audible.play();
 		while(audible.isPlaying());
 		audible.close();
