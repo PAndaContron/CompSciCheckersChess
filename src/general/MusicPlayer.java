@@ -17,10 +17,10 @@ public class MusicPlayer {
 	
 	public static void main(String[] args)
 	{
-		MusicPlayer opus = new MusicPlayer("checkersbgm/bandicoot.wav");
-		opus.play();
-		while(opus.isPlaying());
-		opus.close();
+		MusicPlayer audible = new MusicPlayer("checkersbgm/opus.wav");
+		audible.play();
+		while(audible.isPlaying());
+		audible.close();
 	}
 
 	public static void playMusic(String filename)
