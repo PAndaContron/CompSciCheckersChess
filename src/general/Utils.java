@@ -53,4 +53,29 @@ public class Utils
 				return true;
 		return false;
 	}
+	
+	public static int[] average(int[] a, int[] b)
+	{
+		if(a.length != b.length)
+			throw new IllegalArgumentException();
+		int[] out = new int[a.length];
+		for(int i=0; i<out.length; i++)
+		{
+			out[i] = (a[i]+b[i])/2;
+		}
+		return out;
+	}
+	
+	public static List<int[]> seqAverage(List<int[]> list)
+	{
+		List<int[]> out = new ArrayList<>();
+		int[] previous = null;
+		for(int[] current : list)
+		{
+			if(current != null)
+				out.add(average(current, previous));
+			previous = current;
+		}
+		return out;
+	}
 }
