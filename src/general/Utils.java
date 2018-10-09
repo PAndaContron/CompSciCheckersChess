@@ -1,5 +1,6 @@
 package general;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -32,6 +33,17 @@ public class Utils
 		}
 		
 		return c;
+	}
+	
+	public static List<int[]> split(int[] a)
+	{
+		List<int[]> out = new ArrayList<>();
+		if(a.length == 0)
+			return out;
+		out.add(Arrays.copyOf(a, 2));
+		if(a.length > 2)
+			out.addAll(split(Arrays.copyOfRange(a, 2, a.length)));
+		return out;
 	}
 	
 	public static boolean containsArray(List<int[]> list, int[] arr)
