@@ -1,20 +1,20 @@
 package general;
 
 import java.awt.Color;
-import java.util.List;
 
 public class Board 
 {
-	private Piece[][] board;
+	protected Piece[][] board;
+	
+	public Board(int size)
+	{
+		board = new Piece[size][size];
+	}
 	
 	public void move(int[] from, int[] to)
 	{
-		Piece p = board[from[0]][from[1]];
-		List<int[]> valid = p.getMoves(board, from);
-		if(Utils.containsArray(valid, to))
-		{
-			
-		}
+		board[to[to.length-2]][to[to.length-1]] = board[from[0]][from[1]];
+		board[from[0]][from[1]] = null;
 	}
 	
 	public int countPieces(Color c)
@@ -25,5 +25,22 @@ public class Board
 				if(p.getColor().equals(c))
 					i++;
 		return i;
+	}
+	
+	public String toString()
+	{
+		String out = "";
+		for(Piece[] row : board)
+		{
+			for(Piece p : row)
+			{
+				if(p != null)
+					out += p;
+				else
+					out += "▢";
+			}
+			out += "\n";
+		}
+		return out;
 	}
 }
