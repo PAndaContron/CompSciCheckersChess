@@ -10,21 +10,7 @@ import general.Utils;
 
 public class CheckerPiece extends Piece 
 {
-	private final static List<int[]> diagonals = new ArrayList<>();
-	private final static List<int[]> kingDiagonals = new ArrayList<>();
-	
-	static
-	{
-		diagonals.add(new int[] {1, 1});
-		diagonals.add(new int[] {1, -1});
-		
-		kingDiagonals.addAll(diagonals);
-		kingDiagonals.add(new int[] {-1, 1});
-		kingDiagonals.add(new int[] {-1, -1});
-	}
-	
 	private boolean isKing;
-	private List<int[]> curDiagonals = diagonals;
 	
 	public CheckerPiece(Side s, Color c)
 	{
@@ -34,13 +20,14 @@ public class CheckerPiece extends Piece
 	public void king()
 	{
 		isKing = true;
-		curDiagonals = kingDiagonals;
 	}
 	
 	public List<int[]> getMoves(Piece[][] board, int[] current) 
 	{
 		if(board[current[0]][current[1]] != this)
 				throw new IllegalArgumentException();
+		
+		List<int[]> curDiagonals = getSide().getDiagonals(isKing);
 		
 		List<int[]> captures = getCaptures(board, current);
 		if(!captures.isEmpty())
@@ -67,6 +54,8 @@ public class CheckerPiece extends Piece
 	private List<int[]> getCaptures(Piece[][] board, int[] current)
 	{
 		List<int[]> captures = new ArrayList<>();
+		
+		List<int[]> curDiagonals = getSide().getDiagonals(isKing);
 		
 		for(int[] diag : curDiagonals)
 		{

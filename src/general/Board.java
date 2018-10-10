@@ -27,6 +27,11 @@ public class Board
 		return i;
 	}
 	
+	public Piece getPiece(int row, int col)
+	{
+		return board[row][col];
+	}
+	
 	public String toString()
 	{
 		String out = "";
