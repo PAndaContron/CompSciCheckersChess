@@ -17,16 +17,16 @@ public class CheckerPiece extends Piece
 	{
 		super(s, c);
 		if(c.equals(Color.RED))
-			setIcon("◦");
+			setIcon("\u25E6");
 		else if(c.equals(Color.BLACK))
-			setIcon("•");
+			setIcon("\u2022");
 	}
 	
 	public void king()
 	{
 		isKing = true;
 		if(getColor().equals(Color.RED))
-			setIcon("𝕂");
+			setIcon("\uD835\uDD42");
 		else if(getColor().equals(Color.BLACK))
 			setIcon("K");
 	}

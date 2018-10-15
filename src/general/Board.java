@@ -51,7 +51,7 @@ public abstract class Board
 					if((i+j)%2 == 0)
 						out += " ";
 					else
-						out += "▢";
+						out += "\u25A1";
 			}
 			out += "\n";
 		}
