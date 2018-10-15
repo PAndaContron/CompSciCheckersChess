@@ -74,7 +74,7 @@ public class Utils
 		int[] previous = null;
 		for(int[] current : list)
 		{
-			if(current != null)
+			if(previous != null)
 				out.add(average(current, previous));
 			previous = current;
 		}
@@ -97,7 +97,7 @@ public class Utils
 	public static int[] parseCoord(String s)
 	{
 		int x = s.charAt(0)-65;
-		int y = Integer.parseInt(s.substring(1));
-		return new int[] {x, y};
+		int y = Integer.parseInt(s.substring(1)) - 1;
+		return new int[] {y, x};
 	}
 }

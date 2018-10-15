@@ -1,12 +1,21 @@
 package general;
 
+import java.awt.Color;
+
 public abstract class Player
 {
-	protected String name;
+	private String name;
+	private Color c;
 	
-	public Player(String name)
+	public Player(String name, Color c)
 	{
 		this.name = name;
+		this.c = c;
+	}
+	
+	public Color getColor()
+	{
+		return c;
 	}
 	
 	public String toString()

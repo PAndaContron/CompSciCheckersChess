@@ -5,25 +5,25 @@ import java.util.List;
 
 public abstract class Piece 
 {
-	private char icon;
+	private String icon;
 	private Color color;
 	private Side side;
 	
 	public Piece(Side s, Color c)
 	{
-		this(s, c, ' ');
+		this(s, c, " ");
 	}
 	
-	protected Piece(Side s, Color c, char ic)
+	protected Piece(Side s, Color c, String ic)
 	{
 		icon = ic;
 		color = c;
 		side = s;
 	}
 	
-	protected void setIcon(char c)
+	protected void setIcon(String s)
 	{
-		icon = c;
+		icon = s;
 	}
 	
 	public Color getColor()
@@ -38,7 +38,7 @@ public abstract class Piece
 	
 	public String toString()
 	{
-		return ""+icon;
+		return icon;
 	}
 	
 	abstract public List<int[]> getMoves(Piece[][] board, int[] current);

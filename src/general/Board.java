@@ -22,7 +22,7 @@ public abstract class Board
 		int i = 0;
 		for(Piece[] row : board)
 			for(Piece p : row)
-				if(p.getColor().equals(c))
+				if(p!=null && p.getColor().equals(c))
 					i++;
 		return i;
 	}
@@ -34,15 +34,24 @@ public abstract class Board
 	
 	public String toString()
 	{
-		String out = "";
-		for(Piece[] row : board)
+		String out = " ";
+		for(int i=0; i<board.length; i++)
+			out += Utils.ALPHABET[i];
+		out += "\n";
+		for(int i=0; i<board.length; i++)
 		{
-			for(Piece p : row)
+			out += (i+1);
+			Piece[] row = board[i];
+			for(int j=0; j<row.length; j++)
 			{
+				Piece p = row[j];
 				if(p != null)
 					out += p;
 				else
-					out += "▢";
+					if((i+j)%2 == 0)
+						out += " ";
+					else
+						out += "▢";
 			}
 			out += "\n";
 		}

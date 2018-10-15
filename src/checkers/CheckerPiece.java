@@ -2,6 +2,7 @@ package checkers;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import general.Piece;
@@ -15,11 +16,19 @@ public class CheckerPiece extends Piece
 	public CheckerPiece(Side s, Color c)
 	{
 		super(s, c);
+		if(c.equals(Color.RED))
+			setIcon("◦");
+		else if(c.equals(Color.BLACK))
+			setIcon("•");
 	}
 	
 	public void king()
 	{
 		isKing = true;
+		if(getColor().equals(Color.RED))
+			setIcon("𝕂");
+		else if(getColor().equals(Color.BLACK))
+			setIcon("K");
 	}
 	
 	public List<int[]> getMoves(Piece[][] board, int[] current) 
@@ -48,7 +57,17 @@ public class CheckerPiece extends Piece
 			}
 		}
 		
+		System.out.println("Valid Moves:");
+		for(int[] move : validMoves)
+		{
+			System.out.println(Arrays.toString(move));
+		}
 		return validMoves;
+	}
+	
+	public boolean hasCaptures(Piece[][] board, int[] current)
+	{
+		return !getCaptures(board, current).isEmpty();
 	}
 	
 	private List<int[]> getCaptures(Piece[][] board, int[] current)

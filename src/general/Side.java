@@ -40,9 +40,22 @@ public enum Side
 		allDiagonals.addAll(right);
 	}
 	
-	public Side getOpposite(Side s)
+	public static Side getSide(int[] pos, int size)
 	{
-		switch(s)
+		if(pos[0] == 0)
+			return TOP;
+		if(pos[0] + 1 == size)
+			return BOTTOM;
+		if(pos[1] == 0)
+			return LEFT;
+		if(pos[1] + 1 == size)
+			return RIGHT;
+		return null;
+	}
+	
+	public Side getOpposite()
+	{
+		switch(this)
 		{
 			case LEFT:
 				return RIGHT;
@@ -53,7 +66,7 @@ public enum Side
 			case BOTTOM:
 				return TOP;
 		}
-		throw new IllegalArgumentException();
+		throw new IllegalStateException();
 	}
 	
 	public List<int[]> getDiagonals(boolean all)
