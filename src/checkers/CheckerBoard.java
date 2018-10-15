@@ -47,6 +47,10 @@ public class CheckerBoard extends Board
 			
 			super.move(from, to);
 		}
+		else
+		{
+			throw new IllegalArgumentException("Invalid move");
+		}
 	}
 	
 }

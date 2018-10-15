@@ -2,7 +2,7 @@ package general;
 
 public abstract class Player
 {
-	private String name;
+	protected String name;
 	
 	public Player(String name)
 	{

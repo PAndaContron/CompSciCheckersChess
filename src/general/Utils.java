@@ -6,6 +6,8 @@ import java.util.List;
 
 public class Utils
 {
+	public final static char[] ALPHABET = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
+	
 	public static int[] add(int[] a, int[] b)
 	{
 		if(a.length != b.length)
@@ -77,5 +79,25 @@ public class Utils
 			previous = current;
 		}
 		return out;
+	}
+	
+	public static int[] parseCoords(String s)
+	{
+		String[] terms = s.toUpperCase().split("\\s+");
+		int[] out = {};
+		
+		for(String term : terms)
+		{
+			out = append(out, parseCoord(term));
+		}
+		
+		return out;
+	}
+	
+	public static int[] parseCoord(String s)
+	{
+		int x = s.charAt(0)-65;
+		int y = Integer.parseInt(s.substring(1));
+		return new int[] {x, y};
 	}
 }

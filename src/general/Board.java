@@ -2,7 +2,7 @@ package general;
 
 import java.awt.Color;
 
-public class Board 
+public abstract class Board 
 {
 	protected Piece[][] board;
 	
