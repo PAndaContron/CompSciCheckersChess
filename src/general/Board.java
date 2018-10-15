@@ -2,11 +2,15 @@ package general;
 
 import java.awt.Color;
 
+import javax.swing.JPanel;
+
 public abstract class Board 
 {
 	protected Piece[][] board;
+	private JPanel mainPanel;
+	private JPanel[][] boardPanel;
 	
-	public Board(int size)
+	public Board(int size, Color c1, Color c2)
 	{
 		board = new Piece[size][size];
 	}

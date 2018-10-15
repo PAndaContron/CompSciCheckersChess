@@ -14,7 +14,7 @@ public class CheckerBoard extends Board
 
 	public CheckerBoard()
 	{
-		super(8);
+		super(8, Color.RED, Color.BLACK);
 
 		for (int x = 0; x < 8; x++)
 		{

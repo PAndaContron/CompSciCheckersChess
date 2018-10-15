@@ -6,6 +6,7 @@ import java.util.List;
 public abstract class Piece 
 {
 	private String icon;
+	private String imageIconPath;
 	private Color color;
 	private Side side;
 	
