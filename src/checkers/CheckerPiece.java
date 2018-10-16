@@ -17,18 +17,30 @@ public class CheckerPiece extends Piece
 	{
 		super(s, c);
 		if(c.equals(Color.RED))
+		{
 			setIcon("\u25E6");
+			setImageIcon("checkers/redPiece.png");
+		}
 		else if(c.equals(Color.BLACK))
+		{
 			setIcon("\u2022");
+			setImageIcon("checkers/blackPiece.png");
+		}
 	}
 	
 	public void king()
 	{
 		isKing = true;
 		if(getColor().equals(Color.RED))
+		{
 			setIcon("\uD835\uDD42");
+			setImageIcon("checkers/redKing.png");
+		}
 		else if(getColor().equals(Color.BLACK))
+		{
 			setIcon("K");
+			setImageIcon("checkers/blackKing.png");
+		}
 	}
 	
 	public List<int[]> getMoves(Piece[][] board, int[] current) 

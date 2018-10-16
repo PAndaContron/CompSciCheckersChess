@@ -12,19 +12,21 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-public class MusicPlayer {
+public class SoundPlayer {
 	private final static int BUFFER_SIZE = 128000;
 	
 	public static void main(String[] args)
 	{
-		MusicPlayer audible = new MusicPlayer("resources/sound/music/opus.wav");
+		SoundPlayer audible = new SoundPlayer("music/opus.wav");
 		audible.play();
 		while(audible.isPlaying());
 		audible.close();
 	}
 
-	public static void playMusic(String filename)
+	public static void playSound(String filename)
 	{
+		filename = "resources/sound/"+filename;
+		
 		File soundFile = null;
 		AudioInputStream audioStream = null;
 		AudioFormat audioFormat = null;
@@ -100,8 +102,9 @@ public class MusicPlayer {
 		sourceLine.close();
 	}
 	
-	public static void playMusicAsync(String filename)
+	public static void playSoundAsync(String filename)
 	{
+		filename = "resources/sound/"+filename;
 		File audioFile = new File(filename);
 		 
         try
@@ -136,7 +139,7 @@ public class MusicPlayer {
 	private Clip clip;
 	private AudioInputStream audioStream;
 	
-	public MusicPlayer(String fileName)
+	public SoundPlayer(String fileName)
 	{
 		setFileName(fileName);
 	}
@@ -145,7 +148,7 @@ public class MusicPlayer {
 	{
 		if(clip != null && isOpen())
 			clip.close();
-		filename = newFileName;
+		filename = "resources/sound/"+newFileName;
 		try
 		{
 			File audioFile = new File(filename);

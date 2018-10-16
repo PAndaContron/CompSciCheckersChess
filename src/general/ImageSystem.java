@@ -11,10 +11,13 @@ public class ImageSystem
 	
 	public static ImageIcon getIcon(String filename)
 	{
+		filename = "resources/images/"+filename;
+		
 		if(map.containsKey(filename))
 			return map.get(filename);
 		
 		ImageIcon out = new ImageIcon(filename);
-		
+		map.put(filename, out);
+		return out;
 	}
 }

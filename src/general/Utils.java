@@ -1,11 +1,17 @@
 package general;
 
+import java.awt.Image;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
+
+import javax.swing.ImageIcon;
 
 public class Utils
 {
+	public static Scanner scan = new Scanner(System.in);
+	
 	public final static char[] ALPHABET = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
 	
 	public static int[] add(int[] a, int[] b)
@@ -99,5 +105,12 @@ public class Utils
 		int x = s.charAt(0)-65;
 		int y = Integer.parseInt(s.substring(1)) - 1;
 		return new int[] {y, x};
+	}
+	
+	public static ImageIcon scale(ImageIcon original, int width, int height)
+	{
+		if(width * height == 0)
+			return original;
+		return new ImageIcon(original.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH));
 	}
 }

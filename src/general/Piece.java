@@ -1,7 +1,11 @@
 package general;
 
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
 import java.util.List;
+
+import javax.swing.ImageIcon;
 
 public abstract class Piece 
 {
@@ -27,6 +31,11 @@ public abstract class Piece
 		icon = s;
 	}
 	
+	protected void setImageIcon(String s)
+	{
+		imageIconPath = s;
+	}
+	
 	public Color getColor()
 	{
 		return color;
@@ -35,6 +44,12 @@ public abstract class Piece
 	public Side getSide()
 	{
 		return side;
+	}
+	
+	public void draw(Component c, Graphics g, int x, int y, int width, int height)
+	{
+		ImageIcon image = Utils.scale(ImageSystem.getIcon(imageIconPath), width, height);
+		image.paintIcon(c, g, x, y);
 	}
 	
 	public String toString()
