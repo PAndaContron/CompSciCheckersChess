@@ -11,7 +11,7 @@ public class GraphicsInterface
 
 	public static void main(String[] args)
 	{
-		System.out.println(board);
+		
 		
 		game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		game.getContentPane().add(board.getPanel());

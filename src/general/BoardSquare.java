@@ -26,8 +26,7 @@ public class BoardSquare extends JPanel
 		super.paintComponent(g);
 		if(piece != null)
 		{
-			piece.draw(this, g, getX(), getY(), getWidth(), getHeight());
+			piece.draw(this, g, 0, 0, getWidth(), getHeight());
 		}
-		System.out.printf("(%3d, %3d)\t%3d x %3d\t%s\n", getX(), getY(), getWidth(), getHeight(), piece);
 	}
 }
