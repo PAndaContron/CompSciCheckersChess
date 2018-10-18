@@ -9,9 +9,14 @@ import general.Piece;
 import general.Side;
 import general.Utils;
 
+/**
+ * Represents a checkerboard, a black and red 8 by 8 {@link Board}.
+ */
 public class CheckerBoard extends Board 
 {
-
+	/**
+	 * Creates a new CheckerBoard with {@link CheckerPiece}s in their proper starting positions.
+	 */
 	public CheckerBoard()
 	{
 		super(8, Color.BLACK, Color.RED);
@@ -33,6 +38,15 @@ public class CheckerBoard extends Board
 		updatePanels();
 	}
 	
+	/**
+	 * Moves the piece at <b>from</b> to <b>to</b> and performs necessary captures if the move is valid.
+	 * 
+	 * @param from The location of the piece to be moved.
+	 * @param to The location the piece should be moved to. If the piece is doing more than one jump, the coordinates for the jumps should be put in the array directly after each other.
+	 * <br>For example, <b>{2, 2, 4, 4}</b> means jump to (2, 2), then (3,3).
+	 * 
+	 * @throws IllegalArgumentException if the move is invalid
+	 */
 	public void move(int[] from, int[] to)
 	{
 		Piece p = board[from[0]][from[1]];
