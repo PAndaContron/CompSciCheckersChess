@@ -4,6 +4,9 @@ import javax.swing.JFrame;
 
 import general.Board;
 
+/**
+ * Runs the game using a GUI
+ */
 public class GraphicsInterface
 {
 	private static JFrame game = new JFrame("Checkers");

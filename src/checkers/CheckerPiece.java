@@ -126,10 +126,13 @@ public class CheckerPiece extends Piece
 	}
 	
 	/**
+	 * Finds all valid moves for the piece at <b>current</b> on <b>board</b> where a piece is captured.
 	 * 
 	 * @param board The board the move should work on.
-	 * @param current The position of the piece to be tested.
-	 * @return
+	 * @param current The position of the piece to be tested. For this method, it does not have to be the current piece.
+	 * This is done so that it can be called recursively to test for multiple jumps.
+	 * 
+	 * @return A list of all moves where a piece is captured as coordinates. If there are multiple jumps, each coordinate is appended to the end of the list in order.
 	 */
 	private List<int[]> getCaptures(Piece[][] board, int[] current)
 	{

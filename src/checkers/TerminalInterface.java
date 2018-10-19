@@ -9,6 +9,9 @@ import general.Player;
 import general.TerminalPlayer;
 import general.TurnSystem;
 
+/**
+ * Runs the game using the terminal.
+ */
 public class TerminalInterface 
 {
 

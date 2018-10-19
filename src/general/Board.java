@@ -2,18 +2,29 @@ package general;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Frame;
 import java.awt.GridLayout;
-import java.util.Scanner;
 
 import javax.swing.JPanel;
 
+/**
+ * Represents a square board with {@link BoardSquares}s of alternating colors. Each space can hold one {@link Piece}.
+ */
 public abstract class Board 
 {
+	/** Holds all of the {@link Piece}s on the board. */
 	protected Piece[][] board;
+	/** {@link Panel} which can be used by another program for a GUI display. */
 	private JPanel mainPanel;
+	/** Holds all of the {@link BoardSquare}s that make up the board. */
 	private BoardSquare[][] boardPanels;
 	
+	/**
+	 * Creates a new board with all of its {@link BoardSquares}s.
+	 * 
+	 * @param size The height and width of this board in squares.
+	 * @param c1 The color used on all {@link BoardSquare} where the sum of their coordinates is even.
+	 * @param c2 The color used on all {@link BoardSquare} where the sum of their coordinates is odd.
+	 */
 	public Board(int size, Color c1, Color c2)
 	{
 		board = new Piece[size][size];
@@ -34,6 +45,9 @@ public abstract class Board
 		}
 	}
 	
+	/**
+	 * Sets the {@link Piece} for each {@link BoardSquare} to the one at its position.
+	 */
 	public void updatePanels()
 	{
 		for(int i=0; i<board.length; i++)
@@ -45,6 +59,13 @@ public abstract class Board
 		}
 	}
 	
+	/**
+	 * Moves a {@link Piece}, without any checks for validity, and updates the {@link BoardSquare}s appropriately.
+	 * 
+	 * @param from The position of the {@link Piece} to move.
+	 * @param to The final position of the {@link Piece}.
+	 * <br> If the array is longer than 2 (in the case of multiple jumps), the last 2 values are used.
+	 */
 	public void move(int[] from, int[] to)
 	{
 		board[to[to.length-2]][to[to.length-1]] = board[from[0]][from[1]];
