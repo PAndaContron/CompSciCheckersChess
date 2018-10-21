@@ -13,7 +13,7 @@ public abstract class Board
 {
 	/** Holds all of the {@link Piece}s on the board. */
 	protected Piece[][] board;
-	/** {@link Panel} which can be used by another program for a GUI display. */
+	/** {@link JPanel} which can be used by another program for a GUI display. */
 	private JPanel mainPanel;
 	/** Holds all of the {@link BoardSquare}s that make up the board. */
 	private BoardSquare[][] boardPanels;
@@ -73,6 +73,13 @@ public abstract class Board
 		updatePanels();
 	}
 	
+	/**
+	 * Counts the number of pieces with the specified {@link Color}. This can be used to check a victory condition for some games.
+	 * 
+	 * @param c The color to look for.
+	 * 
+	 * @return The number of pieces with that color.
+	 */
 	public int countPieces(Color c)
 	{
 		int i = 0;
@@ -83,16 +90,34 @@ public abstract class Board
 		return i;
 	}
 	
+	/**
+	 * Gets the {@link Piece} at a specified position.
+	 * 
+	 * @param row The row of the board, starting at 0 for the top.
+	 * @param col The column of the board, starting at 0 for the side.
+	 * 
+	 * @return The {@link Piece} at <b>row</b>, <b>col</b>.
+	 */
 	public Piece getPiece(int row, int col)
 	{
 		return board[row][col];
 	}
 	
+	/**
+	 * Gets a {@link JPanel} which can be used in a GUI to display the current state of the board.
+	 * 
+	 * @return This board;s panel.
+	 */
 	public JPanel getPanel()
 	{
 		return mainPanel;
 	}
 	
+	/**
+	 * Creates a {@link String} with a picture of the board using each {@link Piece}'s icon. Includes numerical labels for rows and alphabetical labels for columns.
+	 * 
+	 * @return The picture of the board.
+	 */
 	public String toString()
 	{
 		String out = " ";

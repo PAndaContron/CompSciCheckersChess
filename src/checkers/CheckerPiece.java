@@ -71,11 +71,6 @@ public class CheckerPiece extends Piece
 	 * If it is a king, it can move diagonally in all directions. However, if there is a piece of the opposite {@link Color} blocking its path in any direction,
 	 * then it must be jumped over and captured. If any more pieces can be jumped over from there, they must be jumped over as well.
 	 * 
-	 * @param board The board the move should work on.
-	 * @param current The position of this piece, to save time that would be used searching.
-	 * 
-	 * @return A list of all valid moves as coordinates. If there are multiple jumps, each coordinate is appended to the end of the list in order.
-	 * 
 	 * @throws IllegalArgumentException if this piece is not at <b>current</b>
 	 */
 	public List<int[]> getMoves(Piece[][] board, int[] current) 
