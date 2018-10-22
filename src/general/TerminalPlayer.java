@@ -40,6 +40,13 @@ public class TerminalPlayer extends Player
 			try
 			{
 				String s = scan.nextLine();
+//				if(s.equals("skip"))
+//					return;
+//				if(s.equals("hasMoves"))
+//				{
+//					System.out.println(b.hasMoves(getColor()));
+//					continue;
+//				}
 				int[] move = Utils.parseCoords(s);
 				if(b.getPiece(move[0], move[1]).getColor().equals(getColor()))
 					b.move(Arrays.copyOf(move, 2), Arrays.copyOfRange(move, 2, move.length));

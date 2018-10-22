@@ -32,9 +32,9 @@ public class TerminalInterface
 				Player next = turns.next();
 				next.makeMove(b);
 				
-				if(b.countPieces(Color.BLACK) == 0)
+				if(b.countPieces(Color.BLACK) == 0 || !b.hasMoves(Color.BLACK))
 					throw new GameOverException(p2.toString());
-				if(b.countPieces(Color.RED) == 0)
+				if(b.countPieces(Color.RED) == 0 || !b.hasMoves(Color.RED))
 					throw new GameOverException(p1.toString());
 			}
 		}

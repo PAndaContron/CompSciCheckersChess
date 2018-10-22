@@ -113,9 +113,22 @@ public abstract class Piece
 	}
 	
 	/**
+	 * Finds whether or not this piece has valid moves on <b>board</b>.
+	 * 
+	 * @param board The board the moves should work on.
+	 * @param current The position of this piece, to save time that would be used searching.
+	 * 
+	 * @return Whether or not there are any valid moves.
+	 */
+	public boolean hasMoves(Piece[][] board, int[] current)
+	{
+		return !getMoves(board, current).isEmpty();
+	}
+	
+	/**
 	 * Finds all valid moves for this piece on <b>board</b>.
 	 * 
-	 * @param board The board the move should work on.
+	 * @param board The board the moves should work on.
 	 * @param current The position of this piece, to save time that would be used searching.
 	 * 
 	 * @return A list of all valid moves as coordinates. If there are multiple stops, each coordinate is appended to the end of the list in order.

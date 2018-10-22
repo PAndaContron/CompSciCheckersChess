@@ -2,7 +2,6 @@ package checkers;
 
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -99,11 +98,11 @@ public class CheckerPiece extends Piece
 			}
 		}
 		
-		System.out.println("Valid Moves:");
-		for(int[] move : validMoves)
-		{
-			System.out.println(Arrays.toString(move));
-		}
+//		System.out.println("Valid Moves:");
+//		for(int[] move : validMoves)
+//		{
+//			System.out.println(Arrays.toString(move));
+//		}
 		return validMoves;
 	}
 	

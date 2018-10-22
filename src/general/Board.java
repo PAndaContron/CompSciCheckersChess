@@ -74,7 +74,28 @@ public abstract class Board
 	}
 	
 	/**
-	 * Counts the number of pieces with the specified {@link Color}. This can be used to check a victory condition for some games.
+	 * Finds whether there are any pieces on the board of a certain color which can make a valid move.
+	 * This can be used to check a victory condition for some games.
+	 * 
+	 * @param c The color to look for.
+	 * 
+	 * @return Whether or not any pieces with that color can move.
+	 */
+	public boolean hasMoves(Color c)
+	{
+		for(int i=0; i<board.length; i++)
+			for(int j=0; j<board.length; j++)
+				if(board[i][j]!=null && board[i][j].getColor().equals(c) && board[i][j].hasMoves(board, new int[] {i, j}))
+				{
+//					System.out.printf("Piece at %d, %d has a move%n", i, j);
+					return true;
+				}
+		return false;
+	}
+	
+	/**
+	 * Counts the number of pieces with the specified {@link Color}.
+	 * This can be used to check a victory condition for some games.
 	 * 
 	 * @param c The color to look for.
 	 * 
