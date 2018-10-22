@@ -1,5 +1,8 @@
 package checkers;
 
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+
 import javax.swing.JFrame;
 
 import general.Board;
@@ -17,7 +20,13 @@ public class GraphicsInterface
 		
 		
 		game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		game.getContentPane().add(board.getPanel());
+		game.getContentPane().setLayout(new GridBagLayout());
+		
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridx = 0;
+		c.gridy = 0;
+		
+		game.getContentPane().add(board.getPanel(), c);
 		game.pack();
 		
 		game.setVisible(true);
