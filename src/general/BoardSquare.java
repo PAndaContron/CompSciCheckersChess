@@ -1,6 +1,7 @@
 package general;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -31,6 +32,7 @@ public class BoardSquare extends JPanel
 	{
 		backColor = c;
 		setBackground(c);
+		addComponentListener(new ResizeListener());
 	}
 	
 	/**
@@ -96,7 +98,8 @@ public class BoardSquare extends JPanel
 	{
         public void componentResized(ComponentEvent e)
         {
-            // Recalculate the variable you mentioned
+            int s = Math.min(getWidth(), getHeight());
+            setSize(new Dimension(s, s));
         }
 	}
 }

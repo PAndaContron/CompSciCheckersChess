@@ -20,13 +20,13 @@ public class GraphicsInterface
 		
 		
 		game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		game.getContentPane().setLayout(new GridBagLayout());
+//		game.getContentPane().setLayout(new GridBagLayout());
 		
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;
 		c.gridy = 0;
 		
-		game.getContentPane().add(board.getPanel(), c);
+		game.getContentPane().add(board.getPanel());
 		game.pack();
 		
 		game.setVisible(true);
