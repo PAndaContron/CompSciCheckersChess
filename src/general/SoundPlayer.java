@@ -46,6 +46,7 @@ public class SoundPlayer {
 	{
 		filename = "resources/sound/"+filename;
 
+		//Catches sneaky attempts to escape the sound folder
 		if(filename.contains("/../")
 				|| filename.contains("\\..\\")
 				|| filename.contains("/..\\")
@@ -137,6 +138,7 @@ public class SoundPlayer {
 	{
 		filename = "resources/sound/"+filename;
 
+		//Catches sneaky attempts to escape the sound folder
 		if(filename.contains("/../")
 				|| filename.contains("\\..\\")
 				|| filename.contains("/..\\")
@@ -209,6 +211,7 @@ public class SoundPlayer {
 			clip.close();
 		filename = "resources/sound/"+newFileName;
 
+		//Catches sneaky attempts to escape the sound folder
 		if(filename.contains("/../")
 				|| filename.contains("\\..\\")
 				|| filename.contains("/..\\")

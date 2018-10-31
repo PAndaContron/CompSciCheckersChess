@@ -50,6 +50,8 @@ public class CheckerBoard extends Board
 	public void move(int[] from, int[] to)
 	{
 		Piece p = board[from[0]][from[1]];
+		
+		//If a piece other than this one can capture, that capture must be made, making this move invalid.
 		List<int[]> capturePieces = new ArrayList<>();
 		for(int i=0; i<board.length; i++)
 			for(int j=0; j<board.length; j++)
@@ -62,6 +64,8 @@ public class CheckerBoard extends Board
 			}
 		if(!capturePieces.isEmpty() && !Utils.containsArray(capturePieces, from))
 			throw new IllegalArgumentException("Invalid move");
+		
+		//If the piece says the move is valid, move and perform captures. Otherwise, throw an exception because it is invalid.
 		List<int[]> valid = p.getMoves(board, from);
 		if(Utils.containsArray(valid, to))
 		{

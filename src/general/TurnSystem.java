@@ -45,6 +45,8 @@ public class TurnSystem
 		if(i < 0)
 			throw new IllegalArgumentException("Player is not in this TurnSystem.");
 		players.remove(p);
+		
+		//Adjust index to compensate for the removed player.
 		if(index > i)
 			index--;
 		index %= players.size();

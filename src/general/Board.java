@@ -158,12 +158,17 @@ public abstract class Board
 	public String toString()
 	{
 		String out = " ";
+		//Chess coordinate column headers
 		for(int i=0; i<board.length; i++)
 			out += Utils.ALPHABET[i];
 		out += "\n";
+		
 		for(int i=0; i<board.length; i++)
 		{
+			//Chess coordinate row headers
 			out += (i+1);
+			
+			//Print out the piece if there is one, or the checkerboard in the background if there isn't
 			Piece[] row = board[i];
 			for(int j=0; j<row.length; j++)
 			{

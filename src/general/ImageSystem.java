@@ -27,6 +27,7 @@ public class ImageSystem
 	{
 		filename = "resources/images/"+filename;
 
+		//Catches sneaky attempts to escape the images folder
 		if(filename.contains("/../")
 				|| filename.contains("\\..\\")
 				|| filename.contains("/..\\")
@@ -35,9 +36,11 @@ public class ImageSystem
 				|| filename.contains(":\\"))
 			throw new IllegalArgumentException("Filename references file outside of \"resources/images/\"");
 		
+		//Return the already loaded image icon if there is one
 		if(map.containsKey(filename))
 			return map.get(filename);
 		
+		//If there isn't one, load it and add it to the map so it won't have to be loaded again.
 		ImageIcon out = new ImageIcon(filename);
 		map.put(filename, out);
 		return out;

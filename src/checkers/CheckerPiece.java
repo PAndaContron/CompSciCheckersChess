@@ -77,12 +77,15 @@ public class CheckerPiece extends Piece
 		if(board[current[0]][current[1]] != this)
 				throw new IllegalArgumentException();
 		
+		//Gets the diagonals for this piece depending on where it started and if it's a king
 		List<int[]> curDiagonals = getSide().getDiagonals(isKing);
 		
+		//If this piece can capture another piece, it must.
 		List<int[]> captures = getCaptures(board, current);
 		if(!captures.isEmpty())
 			return captures;
 
+		//Otherwise, the valid moves are regular diagonals.
 		List<int[]> validMoves = new ArrayList<>();
 		for(int[] diag : curDiagonals)
 		{
@@ -134,6 +137,7 @@ public class CheckerPiece extends Piece
 		
 		List<int[]> curDiagonals = getSide().getDiagonals(isKing);
 		
+		//Test each diagonal this piece can move along for captures
 		for(int[] diag : curDiagonals)
 		{
 			try
@@ -142,13 +146,19 @@ public class CheckerPiece extends Piece
 				int[] nextCoords = Utils.add(coords, diag);
 				Piece p = board[coords[0]][coords[1]];
 				Piece next = board[nextCoords[0]][nextCoords[1]];
+				
+				//Checks for a piece on this diagonal that can be captured
 				if(p != null && !p.getColor().equals(getColor()) && next == null)
 				{
+					//If there is a capture, temporarily remove the captured piece and call this method recursively to test for more
 					board[coords[0]][coords[1]] = null;
 					List<int[]> doubles = getCaptures(board, nextCoords);
 					board[coords[0]][coords[1]] = p;
+					
+					//If a double jump is possible it must be done, so only add the single moves if there are none.
 					if(doubles.isEmpty())
 						captures.add(nextCoords);
+					//Otherwise, return the current jump plus all of the additional jumps that can be made.
 					else
 					{
 						for(int i=0; i<doubles.size(); i++)

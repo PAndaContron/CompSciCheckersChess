@@ -25,6 +25,7 @@ public class TerminalInterface
 		
 		Board b = new CheckerBoard();
 		
+		//Variables related to detecting stalemates
 		int prevPieces = b.countPieces();
 		int movesSinceCap = 0;
 		boolean stalemate = true;
@@ -36,6 +37,7 @@ public class TerminalInterface
 				Player next = turns.next();
 				next.makeMove(b);
 				
+				//Victory conditions: One side loses when all its pieces are gone or can't make a valid move
 				if(b.countPieces(Color.BLACK) == 0 || !b.hasMoves(Color.BLACK))
 					throw new GameOverException(p2);
 				if(b.countPieces(Color.RED) == 0 || !b.hasMoves(Color.RED))
@@ -51,6 +53,8 @@ public class TerminalInterface
 					movesSinceCap++;
 				}
 				
+				//If the game has gone more than 50 turns without a capture, ask the user if they want to declare a stalemate.
+				//If they say yes, end the game with a stalemate. Otherwise, never ask again.
 				if(movesSinceCap > 50 && stalemate)
 				{
 					System.out.println("This game has been going on for quite some time with no progress.");
@@ -67,6 +71,7 @@ public class TerminalInterface
 				}
 			}
 		}
+		//Detect the game ending and print the appropriate message.
 		catch(GameOverException e)
 		{
 			System.out.println(b);

@@ -40,6 +40,8 @@ public class TerminalPlayer extends Player
 			try
 			{
 				String s = scan.nextLine();
+				
+				//Cheats for debugging
 //				if(s.equals("skip"))
 //					return;
 //				if(s.equals("hasMoves"))
@@ -47,6 +49,8 @@ public class TerminalPlayer extends Player
 //					System.out.println(b.hasMoves(getColor()));
 //					continue;
 //				}
+				
+				
 				int[] move = Utils.parseCoords(s);
 				if(b.getPiece(move[0], move[1]).getColor().equals(getColor()))
 					b.move(Arrays.copyOf(move, 2), Arrays.copyOfRange(move, 2, move.length));
@@ -54,6 +58,8 @@ public class TerminalPlayer extends Player
 					throw new IllegalArgumentException("Wrong color");
 				break;
 			}
+			//There are a multitude of exceptions which could be caused by incorrect user input, and nearly none due to
+			//actual bugs, so if there is any kind of Exception thrown, it must be the user's input.
 			catch(Exception e)
 			{
 				System.out.println("That's not a valid move!");
