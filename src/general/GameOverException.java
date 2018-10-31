@@ -14,7 +14,7 @@ public class GameOverException extends Exception
 	/**
 	 * Creates the exception with a reason why the game ended.
 	 * 
-	 * @param string The reason for the game ending.
+	 * @param p The player who won, or null for a stalemate.
 	 */
 	public GameOverException(Player p)
 	{

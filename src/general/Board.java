@@ -7,7 +7,7 @@ import java.awt.GridLayout;
 import javax.swing.JPanel;
 
 /**
- * Represents a square board with {@link BoardSquares}s of alternating colors. Each space can hold one {@link Piece}.
+ * Represents a square board with {@link BoardSquare}s of alternating colors. Each space can hold one {@link Piece}.
  */
 public abstract class Board 
 {
@@ -19,7 +19,7 @@ public abstract class Board
 	private BoardSquare[][] boardPanels;
 	
 	/**
-	 * Creates a new board with all of its {@link BoardSquares}s.
+	 * Creates a new board with all of its {@link BoardSquare}s.
 	 * 
 	 * @param size The height and width of this board in squares.
 	 * @param c1 The color used on all {@link BoardSquare} where the sum of their coordinates is even.
