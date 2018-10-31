@@ -25,6 +25,10 @@ public class TerminalInterface
 		
 		Board b = new CheckerBoard();
 		
+		int prevPieces = b.countPieces();
+		int movesSinceCap = 0;
+		boolean stalemate = true;
+		
 		try
 		{
 			while(true)
@@ -33,19 +37,47 @@ public class TerminalInterface
 				next.makeMove(b);
 				
 				if(b.countPieces(Color.BLACK) == 0 || !b.hasMoves(Color.BLACK))
-					throw new GameOverException(p2.toString());
+					throw new GameOverException(p2);
 				if(b.countPieces(Color.RED) == 0 || !b.hasMoves(Color.RED))
-					throw new GameOverException(p1.toString());
+					throw new GameOverException(p1);
+				
+				if(prevPieces != b.countPieces())
+				{
+					prevPieces = b.countPieces();
+					movesSinceCap = 0;
+				}
+				else
+				{
+					movesSinceCap++;
+				}
+				
+				if(movesSinceCap > 50 && stalemate)
+				{
+					System.out.println("This game has been going on for quite some time with no progress.");
+					System.out.println("Would you like to declare a stalemate?");
+					String s = scan.nextLine();
+					if(s.toLowerCase().charAt(0) == 'y')
+					{
+						throw new GameOverException(null);
+					}
+					else
+					{
+						stalemate = false;
+					}
+				}
 			}
 		}
 		catch(GameOverException e)
 		{
 			System.out.println(b);
 			String s = e.getMessage();
-			if(s.equals(p1.toString()))
+			Player p = e.getWinner();
+			if(p == p1)
 				System.out.println(p1 + " wins!");
-			else if(s.equals(p2.toString()))
+			else if(p == p2)
 				System.out.println(p2 + " wins!");
+			else
+				System.out.println("Stalemate!");
 		}
 		
 		scan.close();

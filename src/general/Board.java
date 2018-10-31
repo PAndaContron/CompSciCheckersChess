@@ -94,6 +94,22 @@ public abstract class Board
 	}
 	
 	/**
+	 * Counts the number of pieces on the board.
+	 * This can be used to check if any pieces have been captured.
+	 * 
+	 * @return The number of pieces.
+	 */
+	public int countPieces()
+	{
+		int i = 0;
+		for(Piece[] row : board)
+			for(Piece p : row)
+				if(p!=null)
+					i++;
+		return i;
+	}
+	
+	/**
 	 * Counts the number of pieces with the specified {@link Color}.
 	 * This can be used to check a victory condition for some games.
 	 * 
