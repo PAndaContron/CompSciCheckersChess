@@ -75,7 +75,6 @@ public class TerminalInterface
 		catch(GameOverException e)
 		{
 			System.out.println(b);
-			String s = e.getMessage();
 			Player p = e.getWinner();
 			if(p == p1)
 				System.out.println(p1 + " wins!");
