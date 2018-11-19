@@ -1,8 +1,13 @@
 package general;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JPanel;
 
@@ -18,6 +23,9 @@ public abstract class Board
 	/** Holds all of the {@link BoardSquare}s that make up the board. */
 	private BoardSquare[][] boardPanels;
 	
+	/** Holds squares which have been selected through the GUI. */
+	private List<int[]> selections = new ArrayList<>();
+	
 	/**
 	 * Creates a new board with all of its {@link BoardSquare}s.
 	 * 
@@ -27,8 +35,69 @@ public abstract class Board
 	 */
 	public Board(int size, Color c1, Color c2)
 	{
+		BoardSquare.SelectionListener selectionListener = new BoardSquare.SelectionListener()
+		{
+			public void react(BoardSquare source, int row, int column)
+			{
+				selections.add(new int[] {row, column});
+				
+			}
+		};
+		BoardSquare.SelectionListener deselectionListener = new BoardSquare.SelectionListener()
+		{
+			public void react(BoardSquare source, int row, int column)
+			{
+				int[] coords = {row, column};
+				int index = Utils.indexOfArray(selections, coords);
+				if(index > -1)
+					selections.remove(index);
+			}
+		};
+		
 		board = new Piece[size][size];
-		mainPanel = new JPanel(new GridLayout(size, size));
+		mainPanel = new JPanel(new GridLayout(size, size))
+			{
+				private static final long serialVersionUID = -3286801522412130579L;
+
+				public void setPreferredSize(Dimension d)
+				{
+					super.setPreferredSize(d);
+					addComponentListener(new ResizeListener());
+				}
+				
+				private void resize()
+				{
+		            int s = Math.min(getWidth(), getHeight());
+		            int rows = ((GridLayout) getLayout()).getRows();
+		            int columns = ((GridLayout) getLayout()).getColumns();
+		            int width = s/columns, height = s/rows;
+		            for(Component c : getComponents())
+		            	c.setSize(new Dimension(width, height));
+		            setSize(new Dimension(s, s));
+		            ((GridLayout) getLayout()).setHgap(0);
+		            ((GridLayout) getLayout()).setVgap(0);
+		            doLayout();
+		            
+		            if(getParent().getWidth() > getWidth())
+		            {
+		            	int prefX = getParent().getWidth()/2 - getWidth()/2;
+		            	setLocation(prefX, getY());
+		            }
+		            else if(getParent().getHeight() > getHeight())
+		            {
+		            	int prefY = getParent().getHeight()/2 - getHeight()/2;
+		            	setLocation(getX(), prefY);
+		            }
+				}
+			
+				class ResizeListener extends ComponentAdapter
+				{
+			        public void componentResized(ComponentEvent e)
+			        {
+			            resize();
+			        }
+				}
+			};
 		mainPanel.setPreferredSize(new Dimension(size*100, size*100));
 		boardPanels = new BoardSquare[size][size];
 		
@@ -37,9 +106,11 @@ public abstract class Board
 			for(int j=0; j<size; j++)
 			{
 				if((i+j) % 2 == 0)
-					boardPanels[i][j] = new BoardSquare(c1);
+					boardPanels[i][j] = new BoardSquare(c1, i, j);
 				else
-					boardPanels[i][j] = new BoardSquare(c2);
+					boardPanels[i][j] = new BoardSquare(c2, i, j);
+				boardPanels[i][j].addSelectionListener(selectionListener);
+				boardPanels[i][j].addDeselectionListener(deselectionListener);
 				mainPanel.add(boardPanels[i][j]);
 			}
 		}
@@ -148,6 +219,23 @@ public abstract class Board
 	public JPanel getPanel()
 	{
 		return mainPanel;
+	}
+	
+	/**
+	 * Gets the positions which have been selected by the user, in order.
+	 * 
+	 * @return A list of 2-element arrays representing the row and column of each selected square.
+	 */
+	public List<int[]> getSelections()
+	{
+		return selections;
+	}
+	
+	public void clearSelections()
+	{
+		List<int[]> selectionsClone = new ArrayList<>();
+		selectionsClone.addAll(selections);
+		selectionsClone.forEach(coords -> boardPanels[coords[0]][coords[1]].deselect());
 	}
 	
 	/**

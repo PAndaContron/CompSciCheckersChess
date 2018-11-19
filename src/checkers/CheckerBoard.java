@@ -62,12 +62,12 @@ public class CheckerBoard extends Board
 						&& ((CheckerPiece) current).hasCaptures(board, new int[] {i, j}))
 					capturePieces.add(new int[] {i, j});
 			}
-		if(!capturePieces.isEmpty() && !Utils.containsArray(capturePieces, from))
+		if(!capturePieces.isEmpty() && Utils.indexOfArray(capturePieces, from)==-1)
 			throw new IllegalArgumentException("Invalid move");
 		
 		//If the piece says the move is valid, move and perform captures. Otherwise, throw an exception because it is invalid.
 		List<int[]> valid = p.getMoves(board, from);
-		if(Utils.containsArray(valid, to))
+		if(Utils.indexOfArray(valid, to)>-1)
 		{
 			List<int[]> captures = Utils.seqAverage(Utils.split(Utils.append(from, to)));
 			for(int[] pos : captures)

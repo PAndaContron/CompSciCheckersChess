@@ -83,20 +83,33 @@ public class Utils
 		return out;
 	}
 	
+	public static int[] join(List<int[]> list)
+	{
+		if(list.size() == 0)
+			return new int[0];
+		int[] arr = list.get(0);
+		for(int i=1; i<list.size(); i++)
+		{
+			arr = append(arr, list.get(i));
+		}
+		
+		return arr;
+	}
+	
 	/**
 	 * Checks if a list contains an array using {@link Arrays#equals(int[], int[])}.
 	 * 
 	 * @param list The list to check.
 	 * @param arr The array to search for.
 	 * 
-	 * @return Whether or not the <b>arr</b> was found in <b>list</b>.
+	 * @return The index of the array in the list, or -1 if it was not found.
 	 */
-	public static boolean containsArray(List<int[]> list, int[] arr)
+	public static int indexOfArray(List<int[]> list, int[] arr)
 	{
-		for(int[] row : list)
-			if(Arrays.equals(row, arr))
-				return true;
-		return false;
+		for(int i = 0; i < list.size(); i++)
+			if(Arrays.equals(list.get(i), arr))
+				return i;
+		return -1;
 	}
 	
 	/**

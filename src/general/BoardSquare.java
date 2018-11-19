@@ -1,10 +1,11 @@
 package general;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JPanel;
 
@@ -22,17 +23,48 @@ public class BoardSquare extends JPanel
 	private Piece piece;
 	/** The color to be used for this piece when it is not selected. */
 	private Color backColor;
+	/** Whether or not this square is currently selected. */
+	private boolean selected = false;
+	
+	/** Functional interfaces listening for the component being selected. */
+	private List<SelectionListener> selectedListeners = new ArrayList<>();
+	/** Functional interfaces listening for the component being deselected. */
+	private List<SelectionListener> deselectedListeners = new ArrayList<>();
+	
+	/** The row number of this piece on the board. */
+	private int row;
+	/** The column number of this piece on the board. */
+	private int column;
 
 	/**
 	 * Creates a new BoardSquare.
 	 * 
 	 * @param c The background color.
 	 */
-	public BoardSquare(Color c)
+	public BoardSquare(Color c, int row, int column)
 	{
 		backColor = c;
 		setBackground(c);
-		addComponentListener(new ResizeListener());
+		addMouseListener(new MouseAdapter()
+			{
+				public void mousePressed(MouseEvent e)
+				{
+					if(selected)
+						deselect();
+					else
+						select();
+				}
+				
+				public void mouseReleased(MouseEvent e)
+				{
+					
+				}
+			}
+		);
+		
+		this.row = row;
+		this.column = column;
+//		addComponentListener(new ResizeListener());
 	}
 	
 	/**
@@ -51,6 +83,8 @@ public class BoardSquare extends JPanel
 	public void select()
 	{
 		setBackground(SELECTED_COLOR);
+		selected = true;
+		selectedListeners.forEach(listener -> listener.react(this, row, column));
 	}
 	
 	/**
@@ -59,6 +93,26 @@ public class BoardSquare extends JPanel
 	public void deselect()
 	{
 		setBackground(backColor);
+		selected = false;
+		deselectedListeners.forEach(listener -> listener.react(this, row, column));
+	}
+	
+	/**
+	 * Adds a listener for this square being selected.
+	 * 
+	 * @param listener
+	 */
+	public void addSelectionListener(SelectionListener listener)
+	{
+		selectedListeners.add(listener);
+	}
+	
+	/**
+	 * Adds a listener for this square being deselected.
+	 */
+	public void addDeselectionListener(SelectionListener listener)
+	{
+		deselectedListeners.add(listener);
 	}
 	
 	/**
@@ -74,6 +128,11 @@ public class BoardSquare extends JPanel
 		{
 			piece.draw(this, g, 0, 0, getWidth(), getHeight());
 		}
+	}
+	
+	public interface SelectionListener
+	{
+		public void react(BoardSquare source, int row, int column);
 	}
 	
 //	public Dimension getPreferredSize()
@@ -94,12 +153,12 @@ public class BoardSquare extends JPanel
 //        return new Dimension(s, s);
 //	}
 	
-	private class ResizeListener extends ComponentAdapter
-	{
-        public void componentResized(ComponentEvent e)
-        {
-            int s = Math.min(getWidth(), getHeight());
-            setSize(new Dimension(s, s));
-        }
-	}
+//	private class ResizeListener extends ComponentAdapter
+//	{
+//        public void componentResized(ComponentEvent e)
+//        {
+//            int s = Math.min(getWidth(), getHeight());
+//            setSize(new Dimension(s, s));
+//        }
+//	}
 }
