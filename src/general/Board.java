@@ -221,7 +221,7 @@ public abstract class Board
 	/**
 	 * Gets a {@link JPanel} which can be used in a GUI to display the current state of the board.
 	 * 
-	 * @return This board;s panel.
+	 * @return This board's panel.
 	 */
 	public JPanel getPanel()
 	{
