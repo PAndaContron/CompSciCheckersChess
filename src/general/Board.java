@@ -3,6 +3,7 @@ package general;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -63,6 +64,12 @@ public abstract class Board
 				{
 					super.setPreferredSize(d);
 					addComponentListener(new ResizeListener());
+				}
+				
+				public void paintComponent(Graphics g)
+				{
+					resize();
+//					super.paintComponent(g);
 				}
 				
 				private void resize()

@@ -85,7 +85,7 @@ public class GraphicsInterface
 					JOptionPane.showMessageDialog(game, "Invalid move!", "Invalid Move", JOptionPane.ERROR_MESSAGE);
 				}
 				
-				game.repaint();
+				board.getPanel().repaint();
 			}
 		});
 		
@@ -106,7 +106,7 @@ public class GraphicsInterface
 	
 	private static void endGame(Player winner)
 	{
-		game.repaint();
+		board.getPanel().repaint();
 		JOptionPane.showMessageDialog(game, winner==null ? "Stalemate!" : winner+" wins!", "Game Over!", JOptionPane.INFORMATION_MESSAGE);
 		System.exit(0);
 	}
