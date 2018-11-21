@@ -30,7 +30,7 @@ public class Bridge
 		
 		String ser = serialize(testObj);
 		System.out.println(ser);
-		testObj = (Test) deserialize(ser);
+		testObj = deserialize(ser, testObj.getClass());
 		
 		staticPrint.invoke(null);
 		staticPrintParam.invoke(null, "Static Parameter");
@@ -67,7 +67,7 @@ public class Bridge
 		return ser;
 	}
 	
-	public static Object deserialize(String s)
+	public static <T> T deserialize(String s, Class<T> clazz)
 	{
 		ByteArrayInputStream bis = new ByteArrayInputStream(s.getBytes());
 		Object o = null;
@@ -80,7 +80,7 @@ public class Bridge
 		{
 			e.printStackTrace();
 		}
-		return o;
+		return clazz.cast(o);
 	}
 
 }
