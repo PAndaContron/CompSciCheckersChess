@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Stack;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class JsonObject
 {
@@ -55,11 +57,6 @@ public class JsonObject
 	public JsonObject(boolean b)
 	{
 		value = b;
-	}
-	
-	public JsonObject(char c)
-	{
-		value = c;
 	}
 	
 	public JsonObject(JsonObject[] arr)
@@ -112,11 +109,6 @@ public class JsonObject
 		value = b;
 	}
 	
-	public void setValue(char c)
-	{
-		value = c;
-	}
-	
 	public void setValue(JsonObject[] arr)
 	{
 		value = arr;
@@ -160,8 +152,6 @@ public class JsonObject
 			return Float.class;
 		if(value instanceof Boolean)
 			return Boolean.class;
-		if(value instanceof Character)
-			return Character.class;
 		if(value instanceof JsonObject[])
 			return JsonObject[].class;
 		if(value instanceof Map)
@@ -225,13 +215,6 @@ public class JsonObject
 		return false;
 	}
 	
-	public char getChar()
-	{
-		if(value != null && value instanceof Character)
-			return (Character) value;
-		return 0;
-	}
-	
 	public JsonObject[] getArray()
 	{
 		if(value != null && value instanceof JsonObject[])
@@ -269,6 +252,26 @@ public class JsonObject
 	
 	public String toString()
 	{
+		if(value == null)
+		{
+			return "null";
+		}
+		if(value instanceof Long)
+		{
+			return value+"L";
+		}
+		if(value instanceof Short)
+		{
+			return value+"S";
+		}
+		if(value instanceof Byte)
+		{
+			return value+"T";
+		}
+		if(value instanceof Float)
+		{
+			return value+"F";
+		}
 		if(value instanceof Map)
 		{
 			@SuppressWarnings("unchecked")
@@ -283,7 +286,14 @@ public class JsonObject
 		}
 		if(value instanceof String)
 		{
-			return String.format("\"%s\"", value);
+			return String.format("\"%s\"", ((String)value)
+					.replace("\\", "\\\\")
+					.replace("\t", "\\t")
+					.replace("\b", "\\b")
+					.replace("\f", "\\f")
+					.replace("\r", "\\r")
+					.replace("\n", "\\n")
+					.replace("\"", "\\\""));
 		}
 		if(value instanceof JsonObject[])
 		{
@@ -308,7 +318,7 @@ public class JsonObject
 				int colonIndex = trimTag.indexOf(":");
 				String key = trimTag.substring(1, colonIndex-1).trim();
 				String value = trimTag.substring(colonIndex+1, trimTag.length()).trim();
-				System.out.printf("Tag: %20s Key: %20s Value: %20s%n", trimTag, key, value);
+//				System.out.printf("Tag: %20s Key: %20s Value: %20s%n", trimTag, key, value);
 				
 				map.put(key, parse(value));
 			}
@@ -318,7 +328,7 @@ public class JsonObject
 		if(json.startsWith("["))
 		{
 			json = json.substring(1, json.length()-1).trim();
-			String[] elements = json.split("\\s*,\\s*");
+			String[] elements = getTags(json);
 			JsonObject[] array = new JsonObject[elements.length];
 			for(int i=0; i<elements.length; i++)
 			{
@@ -329,41 +339,51 @@ public class JsonObject
 		}
 		if(json.startsWith("\""))
 		{
-			return new JsonObject(json.substring(1, json.length()-1));
+			return new JsonObject(parseUnicodeEscapes(json.substring(1, json.length()-1)
+					.replace("\\t", "\t")
+					.replace("\\f", "\f")
+					.replace("\\b", "\b")
+					.replace("\\n", "\n")
+					.replace("\\r", "\r")
+					.replace("\\\"", "\"")
+					.replace("\\\\", "\\")));
 		}
 		try
 		{
-			return new JsonObject(Integer.parseInt(json));
-		}
-		catch(Exception e)
-		{
-			
-		}
-		try
-		{
-			return new JsonObject(Long.parseLong(json));
-		}
-		catch(Exception e)
-		{
-			
-		}
-		try
-		{
+			int radix = 10;
+			if(json.startsWith("0b") || json.startsWith("0B"))
+				radix = 2;
+			else if(json.startsWith("0x") || json.startsWith("0X"))
+				radix = 16;
+			if(radix != 10)
+				json = json.substring(2);
+			if(json.endsWith("l") || json.endsWith("L"))
+				return new JsonObject(Long.parseLong(json.substring(0, json.length()-1), radix));
+			if(json.endsWith("s") || json.endsWith("S"))
+				return new JsonObject(Short.parseShort(json.substring(0, json.length()-1), radix));
+			if(json.endsWith("t") || json.endsWith("T"))
+				return new JsonObject(Byte.parseByte(json.substring(0, json.length()-1), radix));
+			if(json.endsWith("f") || json.endsWith("F"))
+				return new JsonObject(Float.parseFloat(json.substring(0, json.length()-1)));
+			try
+			{
+				return new JsonObject(Integer.parseInt(json, radix));
+			}
+			catch(Exception e)
+			{
+				
+			}
 			return new JsonObject(Double.parseDouble(json));
 		}
 		catch(Exception e)
 		{
 			
 		}
-		try
+		if(json.equals("true") || json.equals("false"))
 		{
 			return new JsonObject(Boolean.parseBoolean(json));
 		}
-		catch(Exception e)
-		{
-			
-		}
-		return new JsonObject(json.charAt(0));
+		return new JsonObject();
 	}
 	
 	private static String[] getTags(String json)
@@ -409,5 +429,20 @@ public class JsonObject
 	private static String format(String key, JsonObject value)
 	{
 		return String.format("\"%s\":%s", key, value);
+	}
+	
+	private static String parseUnicodeEscapes(String str)
+	{
+		Pattern regex = Pattern.compile("\\\\u[0-9A-Fa-f]{4}");
+		Matcher regexMatcher = regex.matcher(str);
+		
+		while(regexMatcher.find())
+		{
+			str = regexMatcher.replaceFirst(
+					""+(char) Integer.parseInt(regexMatcher.group(0).substring(2), 16));
+			regexMatcher = regex.matcher(str);
+		}
+		
+		return str;
 	}
 }
