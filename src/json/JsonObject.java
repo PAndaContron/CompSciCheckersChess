@@ -59,16 +59,106 @@ public class JsonObject
 		value = b;
 	}
 	
+	public JsonObject(Map<String, JsonObject> map)
+	{
+		value = map;
+	}
+
 	public JsonObject(JsonObject[] arr)
 	{
 		value = arr;
 	}
 	
-	public JsonObject(Map<String, JsonObject> map)
+	public JsonObject(String[] arr)
 	{
-		value = map;
+		JsonObject[] objArr = new JsonObject[arr.length];
+		for(int i=0; i<arr.length; i++)
+		{
+			objArr[i] = new JsonObject(arr[i]);
+		}
+		value = objArr;
 	}
 	
+	public JsonObject(int[] arr)
+	{
+		JsonObject[] objArr = new JsonObject[arr.length];
+		for(int i=0; i<arr.length; i++)
+		{
+			objArr[i] = new JsonObject(arr[i]);
+		}
+		value = objArr;
+	}
+
+	public JsonObject(byte[] arr)
+	{
+		JsonObject[] objArr = new JsonObject[arr.length];
+		for(int i=0; i<arr.length; i++)
+		{
+			objArr[i] = new JsonObject(arr[i]);
+		}
+		value = objArr;
+	}
+
+	public JsonObject(short[] arr)
+	{
+		JsonObject[] objArr = new JsonObject[arr.length];
+		for(int i=0; i<arr.length; i++)
+		{
+			objArr[i] = new JsonObject(arr[i]);
+		}
+		value = objArr;
+	}
+
+	public JsonObject(long[] arr)
+	{
+		JsonObject[] objArr = new JsonObject[arr.length];
+		for(int i=0; i<arr.length; i++)
+		{
+			objArr[i] = new JsonObject(arr[i]);
+		}
+		value = objArr;
+	}
+
+	public JsonObject(double[] arr)
+	{
+		JsonObject[] objArr = new JsonObject[arr.length];
+		for(int i=0; i<arr.length; i++)
+		{
+			objArr[i] = new JsonObject(arr[i]);
+		}
+		value = objArr;
+	}
+
+	public JsonObject(float[] arr)
+	{
+		JsonObject[] objArr = new JsonObject[arr.length];
+		for(int i=0; i<arr.length; i++)
+		{
+			objArr[i] = new JsonObject(arr[i]);
+		}
+		value = objArr;
+	}
+
+	public JsonObject(boolean[] arr)
+	{
+		JsonObject[] objArr = new JsonObject[arr.length];
+		for(int i=0; i<arr.length; i++)
+		{
+			objArr[i] = new JsonObject(arr[i]);
+		}
+		value = objArr;
+	}
+
+	public JsonObject(Map<String, JsonObject>[] arr)
+	{
+		JsonObject[] objArr = new JsonObject[arr.length];
+		for(int i=0; i<arr.length; i++)
+		{
+			objArr[i] = new JsonObject(arr[i]);
+		}
+		value = objArr;
+	}
+
 	public void setValue(String s)
 	{
 		value = s;
@@ -388,6 +478,9 @@ public class JsonObject
 	
 	private static String[] getTags(String json)
 	{
+		if(json.matches("\\s*"))
+			return new String[0];
+		
 		int start = 0;
 		List<String> tags = new ArrayList<>();
 		Stack<Character> groups = new Stack<>();

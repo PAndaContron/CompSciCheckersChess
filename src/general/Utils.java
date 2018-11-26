@@ -1,8 +1,11 @@
 package general;
 
 import java.awt.Image;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -196,6 +199,13 @@ public class Utils
 		int x = s.charAt(0)-65;
 		int y = Integer.parseInt(s.substring(1)) - 1;
 		return new int[] {y, x};
+	}
+	
+	public static String getDateTime()
+	{
+		Date date = new Date();
+		DateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy HH.mm.ss");
+		return dateFormat.format(date);
 	}
 	
 	/**
