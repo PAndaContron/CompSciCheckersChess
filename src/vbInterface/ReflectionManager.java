@@ -2,6 +2,7 @@ package vbInterface;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -130,12 +131,14 @@ public class ReflectionManager
 	@SuppressWarnings("unchecked")
 	public static String invoke(String json) throws Throwable
 	{
+		new File("logs/").mkdirs();
+		String dateTime = Utils.getDateTime();
 		PrintStream realout = System.out;
 		PrintStream realerr = System.err;
 		System.setOut(new PrintStream(new FileOutputStream(String.format(
-				"logs/[%s] out.log", Utils.getDateTime()))));
+				"logs/[%s] out.log", dateTime))));
 		System.setErr(new PrintStream(new FileOutputStream(String.format(
-				"logs/[%s] err.log", Utils.getDateTime()))));
+				"logs/[%s] err.log", dateTime))));
 		
 		JsonObject info = JsonObject.parse(json);
 		
