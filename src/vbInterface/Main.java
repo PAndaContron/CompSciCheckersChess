@@ -11,6 +11,50 @@ public class Main
 
 	public static void main(String[] args)
 	{
+		if(args[0].equals("-convert"))
+		{
+			switch(args[1])
+			{
+				case "int":
+				case "integer":
+					System.out.print(ReflectionManager.serialize(Integer.parseInt(args[2])));
+					return;
+				case "byte":
+					System.out.print(ReflectionManager.serialize(Byte.parseByte(args[2])));
+					return;
+				case "short":
+					System.out.print(ReflectionManager.serialize(Short.parseShort(args[2])));
+					return;
+				case "long":
+					System.out.print(ReflectionManager.serialize(Long.parseLong(args[2])));
+					return;
+				case "char":
+				case "character":
+					System.out.print(ReflectionManager.serialize(args[2].charAt(0)));
+					return;
+				case "float":
+					System.out.print(ReflectionManager.serialize(Float.parseFloat(args[2])));
+					return;
+				case "double":
+					System.out.print(ReflectionManager.serialize(Double.parseDouble(args[2])));
+					return;
+				case "boolean":
+					System.out.print(ReflectionManager.serialize(Boolean.parseBoolean(args[2])));
+					return;
+				case "string":
+					System.out.print(ReflectionManager.serialize(args[2]));
+					return;
+				default:
+					return;
+			}
+		}
+		
+		if(args[0].equals("-deserialize"))
+		{
+			System.out.print(ReflectionManager.deserialize(args[1]));
+			return;
+		}
+		
 		String callerJson = args[0].equals("null") ? null : args[0];
 		String methodStr = args[1];
 		String[] paramsJson = {};
