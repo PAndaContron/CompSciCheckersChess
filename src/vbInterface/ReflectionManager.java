@@ -11,6 +11,7 @@ import java.io.PrintStream;
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,7 +51,8 @@ public class ReflectionManager
 		{
 			ObjectOutputStream out = new ObjectOutputStream(bos);
 			out.writeObject(obj);
-			ser = bos.toString();
+//			ser = bos.toString();
+			ser = Base64.getEncoder().encodeToString(bos.toByteArray());
 			out.close();
 			bos.close();
 		}
@@ -79,7 +81,8 @@ public class ReflectionManager
 	
 	public static Serializable deserialize(String s)
 	{
-		ByteArrayInputStream bis = new ByteArrayInputStream(s.getBytes());
+//		ByteArrayInputStream bis = new ByteArrayInputStream(s.getBytes());
+		ByteArrayInputStream bis = new ByteArrayInputStream(Base64.getDecoder().decode(s));
 		Serializable o = null;
 		try
 		{
