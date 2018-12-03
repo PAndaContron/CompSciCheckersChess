@@ -9,6 +9,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintStream;
 import java.io.Serializable;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Executable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Base64;
@@ -24,12 +26,26 @@ public class ReflectionManager
 
 	public static void main(String[] args) throws Throwable
 	{
-//		Test test = new Test("Instance variable");
-		JsonObject caller = JsonObject.parse(serializeJSON(Test.class, null));
+		JsonObject initCaller = JsonObject.parse(serializeJSON(Test.class, null));
+		Map<String, JsonObject> initRequestMap = new HashMap<>();
+		initRequestMap.put("caller", initCaller);
+		initRequestMap.put("method", new JsonObject("<init>"));
+		initRequestMap.put("parameters", new JsonObject(new JsonObject[]
+		{
+			JsonObject.parse(serializeJSON("Instance variable"))	
+		}));
+		String initRequestStr = new JsonObject(initRequestMap).toString();
+		System.out.println(initRequestStr);
+		
+		JsonObject initResponseJson = JsonObject.parse(invoke(initRequestStr));
+		System.out.println(initResponseJson);
+		
+		Test test = (Test) deserialize(initResponseJson.getValue("return").getValue("object").getString());
+		JsonObject caller = JsonObject.parse(serializeJSON(Test.class, test));
 		
 		Map<String, JsonObject> requestMap = new HashMap<>();
 		requestMap.put("caller", caller);
-		requestMap.put("method", new JsonObject("staticEcho"));
+		requestMap.put("method", new JsonObject("print"));
 		requestMap.put("parameters", new JsonObject(new JsonObject[]
 		{
 			JsonObject.parse(serializeJSON("JSON String"))	
@@ -40,7 +56,7 @@ public class ReflectionManager
 		JsonObject responseJson = JsonObject.parse(invoke(requestStr));
 		
 		System.out.println(responseJson);
-		System.out.println(deserialize(responseJson.getValue("return").getValue("object").getString()));
+//		System.out.println(deserialize(responseJson.getValue("return").getValue("object").getString()));
 	}
 	
 	public static String serialize(Serializable obj)
@@ -187,10 +203,13 @@ public class ReflectionManager
 			params[i] = serObj==null ? null : deserialize(serObj);
 		}
 		
-		Method m = null;
+		Executable m = null;
 		try
 		{
-			m = clazz.getMethod(info.getValue("method").getString(), paramClasses);
+			if(!info.getValue("method").getString().equals("<init>"))
+				m = clazz.getMethod(info.getValue("method").getString(), paramClasses);
+			else
+				m = clazz.getConstructor(paramClasses);
 		}
 		catch(NoSuchMethodException e)
 		{
@@ -205,7 +224,10 @@ public class ReflectionManager
 		Serializable returnObj = null;
 		try
 		{
-			returnObj = (Serializable) m.invoke(obj, (Object[]) params);
+			if(m instanceof Method)
+				returnObj = (Serializable) ((Method) m).invoke(obj, (Object[]) params);
+			else
+				returnObj = (Serializable) ((Constructor<Serializable>) m).newInstance((Object[]) params);
 		}
 		catch(IllegalArgumentException | IllegalAccessException | NullPointerException
 				| ClassCastException e)
@@ -224,7 +246,7 @@ public class ReflectionManager
 			throw e.getCause();
 		}
 		
-		Class<? extends Serializable> returnClass = (Class<? extends Serializable>) m.getReturnType();
+		Class<? extends Serializable> returnClass = (Class<? extends Serializable>) (m instanceof Method ? ((Method) m).getReturnType() : clazz);
 		
 		Map<String, JsonObject> responseMap = new HashMap<>();
 		responseMap.put("caller", JsonObject.parse(serializeJSON(clazz, obj)));

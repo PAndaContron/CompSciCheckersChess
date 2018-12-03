@@ -55,14 +55,28 @@ public class Main
 			return;
 		}
 		
-		String callerJson = args[0].equals("null") ? null : args[0];
-		String methodStr = args[1];
+		JsonObject caller = null, method = null;
+		
+		if(args[0].equals("-construct"))
+		{
+			Map<String, JsonObject> initMap = new HashMap<>();
+			initMap.put("class", new JsonObject(args[1]));
+			initMap.put("object", new JsonObject((String) null));
+			caller = new JsonObject(initMap);
+			method = new JsonObject("<init>");
+		}
+		else
+		{
+			String callerJson = args[0].equals("null") ? null : args[0];
+			String methodStr = args[1];
+			caller = JsonObject.parse(callerJson);
+			method = new JsonObject(methodStr);
+		}
+		
 		String[] paramsJson = {};
 		if(args.length > 2)
 			paramsJson = Arrays.copyOfRange(args, 2, args.length);
 		
-		JsonObject caller = JsonObject.parse(callerJson);
-		JsonObject method = new JsonObject(methodStr);
 		JsonObject[] params = new JsonObject[paramsJson.length];
 		for(int i=0; i<paramsJson.length; i++)
 		{
