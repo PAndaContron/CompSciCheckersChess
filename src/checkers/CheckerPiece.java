@@ -13,8 +13,10 @@ import general.Utils;
 /**
  *	Represents a checker, with a {@link Side} of the board and a piece {@link Color}.
  */
-public class CheckerPiece extends Piece 
+public class CheckerPiece extends Piece
 {
+	private static final long serialVersionUID = 1L;
+
 	/** Stores whether or not this piece is a King. */
 	private boolean isKing;
 	

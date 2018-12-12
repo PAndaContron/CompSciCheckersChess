@@ -7,6 +7,7 @@ import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,8 +16,10 @@ import javax.swing.JPanel;
 /**
  * Represents a square board with {@link BoardSquare}s of alternating colors. Each space can hold one {@link Piece}.
  */
-public abstract class Board 
+public abstract class Board implements Serializable
 {
+	private static final long serialVersionUID = 1L;
+
 	/** Holds all of the {@link Piece}s on the board. */
 	protected Piece[][] board;
 	/** {@link JPanel} which can be used by another program for a GUI display. */

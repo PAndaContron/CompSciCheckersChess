@@ -1,5 +1,6 @@
 package general;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.Map;
 /**
  * Represents a side of a {@link Board}.
  */
-public enum Side 
+public enum Side implements Serializable
 {
 	/** The left side of a {@link Board}, column 0. */
 	LEFT,
@@ -19,6 +20,8 @@ public enum Side
 	/** The bottom side of a {@link Board}, row <b>size-1</b>. */
 	BOTTOM;
 	
+	private static final long serialVersionUID = 1L;
+
 	/** Holds a mapping of valid diagonals moving 1 space away from each side, primarily used for checkers. */
 	private static Map<Side, List<int[]>> diagonals = new HashMap<>();
 	/** Holds all of the diagonals moving 1 space in any direction, primarily used for checkers. */

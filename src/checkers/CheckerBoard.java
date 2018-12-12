@@ -12,8 +12,10 @@ import general.Utils;
 /**
  * Represents a checkerboard, a black and red 8 by 8 {@link Board}.
  */
-public class CheckerBoard extends Board 
+public class CheckerBoard extends Board
 {
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * Creates a new CheckerBoard with {@link CheckerPiece}s in their proper starting positions.
 	 */

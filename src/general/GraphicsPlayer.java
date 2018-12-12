@@ -8,6 +8,8 @@ import java.util.Arrays;
  */
 public class GraphicsPlayer extends Player
 {
+	private static final long serialVersionUID = 1L;
+
 	public GraphicsPlayer(String name, Color c)
 	{
 		super(name, c);

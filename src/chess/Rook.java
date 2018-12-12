@@ -7,6 +7,7 @@ import general.Piece;
 import general.Side;
 
 public class Rook extends Piece{
+	private static final long serialVersionUID = 1L;
 
 	public Rook(Side s, Color c) {
 		super(s, c);

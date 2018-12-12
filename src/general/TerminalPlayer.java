@@ -9,6 +9,8 @@ import java.util.Scanner;
  */
 public class TerminalPlayer extends Player
 {
+	private static final long serialVersionUID = 1L;
+
 	/** Used to take in user input. */
 	private Scanner scan;
 	

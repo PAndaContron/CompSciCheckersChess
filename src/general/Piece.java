@@ -3,6 +3,7 @@ package general;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
+import java.io.Serializable;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -10,8 +11,10 @@ import javax.swing.ImageIcon;
 /**
  * Represents a generic piece in a board game such as Chess or Checkers.
  */
-public abstract class Piece 
+public abstract class Piece implements Serializable
 {
+	private static final long serialVersionUID = 1L;
+
 	/** A single character String used to represent this piece in a terminal. */
 	private String icon;
 	/** The path to the {@link ImageIcon} used to represent this piece in a GUI in <b>resources/images/</b>. */

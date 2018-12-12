@@ -14,8 +14,8 @@ import javax.swing.JPanel;
  */
 public class BoardSquare extends JPanel
 {
-	/** This class is probably never going to be serialized, but Eclipse made me add this anyway. */
-	private static final long serialVersionUID = -1840139402010540234L;
+	private static final long serialVersionUID = 1L;
+	
 	/** The color used when this square is selected. */
 	private static final Color SELECTED_COLOR = Color.YELLOW;
 	

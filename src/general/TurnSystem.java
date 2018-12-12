@@ -1,13 +1,16 @@
 package general;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Manages whose turn it is for any number of {@link Player}s.
  */
-public class TurnSystem
+public class TurnSystem implements Serializable
 {
+	private static final long serialVersionUID = 1L;
+
 	/** Holds all of the players currently being managed by this object. */
 	private List<Player> players = new ArrayList<>();
 	/** The index in <b>players</b> of the next {@link Player} to have their turn. */

@@ -1,12 +1,15 @@
 package general;
 
 import java.awt.Color;
+import java.io.Serializable;
 
 /**
  * Represents a player, who can make moves on a {@link Board}.
  */
-public abstract class Player
+public abstract class Player implements Serializable
 {
+	private static final long serialVersionUID = 1L;
+
 	/** A name used to identify this player in the interface. */
 	private String name;
 	/** The color of this player's pieces, used to validate moves. */
