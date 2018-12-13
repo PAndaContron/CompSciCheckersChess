@@ -161,6 +161,16 @@ public class Utils
 		return out;
 	}
 	
+	public static <T> T[][] arrayCopy2D(T[][] original)
+	{
+		T[][] newArray = Arrays.copyOf(original, original.length);
+		for(int i=0; i<original.length; i++)
+		{
+			newArray[i] = Arrays.copyOf(original[i], original[i].length);
+		}
+		return newArray;
+	}
+	
 	/**
 	 * Converts a series of Chess coordinates into indexes for an array.
 	 * <br>

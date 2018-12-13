@@ -1,0 +1,66 @@
+package chess;
+
+import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
+
+import general.Piece;
+import general.Side;
+import general.Utils;
+
+public abstract class ChessPiece extends Piece
+{
+	private static final long serialVersionUID = 1L;
+
+	public ChessPiece(Side s, Color c)
+	{
+		super(s, c);
+	}
+
+	protected ChessPiece(Side s, Color c, String ic)
+	{
+		super(s, c, ic);
+	}
+
+	public List<int[]> getMoves(Piece[][] board, int[] current)
+	{
+		List<int[]> moves = new ArrayList<>();
+		List<int[]> movesNoCheck = getMovesNoCheck(board, current);
+		
+		for(int[] move : movesNoCheck)
+		{
+			if(board[move[0]][move[1]] instanceof King)
+				continue;
+			
+			Piece[][] tempBoard = Utils.arrayCopy2D(board);
+			
+			tempBoard[move[0]][move[1]] = this;
+			tempBoard[current[0]][current[1]] = null;
+			
+			List<int[]> allNewMoves = new ArrayList<>();
+			
+			for(int i=0; i<tempBoard.length; i++)
+			{
+				Piece[] row = tempBoard[i];
+				for(int j=0; j<row.length; j++)
+				{
+					Piece p = row[j];
+					if(p != null && p instanceof ChessPiece)
+					{
+						allNewMoves.addAll(((ChessPiece) p).getMovesNoCheck(tempBoard, new int[] {i, j}));
+					}
+				}
+			}
+			
+			for(int[] newMove : allNewMoves)
+			{
+				
+			}
+		}
+		
+		return moves;
+	}
+	
+	abstract protected List<int[]> getMovesNoCheck(Piece[][] board, int[] current);
+
+}
