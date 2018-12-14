@@ -22,37 +22,58 @@ public enum Side implements Serializable
 	
 	private static final long serialVersionUID = 1L;
 
-	/** Holds a mapping of valid diagonals moving 1 space away from each side, primarily used for checkers. */
+	/** Holds a mapping of valid diagonals moving 1 space away from each side. */
 	private static Map<Side, List<int[]>> diagonals = new HashMap<>();
-	/** Holds all of the diagonals moving 1 space in any direction, primarily used for checkers. */
+	/** Holds all of the diagonals moving 1 space in any direction. */
 	private static List<int[]> allDiagonals = new ArrayList<>();
+
+	/** Holds a mapping of valid orthogonals moving 1 space away from each side. */
+	private static Map<Side, List<int[]>> orthogonals = new HashMap<>();
+	/** Holds all of the orthogonals moving 1 space in any direction. */
+	private static List<int[]> allOrthogonals = new ArrayList<>();
 	
 	/**
-	 * Initializes the lists of diagonals.
+	 * Initializes the lists of diagonals and orthogonals.
 	 */
 	static
 	{
-		List<int[]> left = new ArrayList<>(), right = new ArrayList<>(), top = new ArrayList<>(), bottom = new ArrayList<>();
+		List<int[]> diagLeft = new ArrayList<>(), diagRight = new ArrayList<>(), diagTop = new ArrayList<>(), diagBottom = new ArrayList<>();
 		
-		left.add(new int[] {1, 1});
-		left.add(new int[] {-1, 1});
+		diagLeft.add(new int[] {1, 1});
+		diagLeft.add(new int[] {-1, 1});
 		
-		right.add(new int[] {1, -1});
-		right.add(new int[] {-1, -1});
+		diagRight.add(new int[] {1, -1});
+		diagRight.add(new int[] {-1, -1});
 		
-		top.add(new int[] {1, 1});
-		top.add(new int[] {1, -1});
+		diagTop.add(new int[] {1, 1});
+		diagTop.add(new int[] {1, -1});
 		
-		bottom.add(new int[] {-1, 1});
-		bottom.add(new int[] {-1, -1});
+		diagBottom.add(new int[] {-1, 1});
+		diagBottom.add(new int[] {-1, -1});
 		
-		diagonals.put(LEFT, left);
-		diagonals.put(RIGHT, right);
-		diagonals.put(TOP, top);
-		diagonals.put(BOTTOM, bottom);
+		diagonals.put(LEFT, diagLeft);
+		diagonals.put(RIGHT, diagRight);
+		diagonals.put(TOP, diagTop);
+		diagonals.put(BOTTOM, diagBottom);
 		
-		allDiagonals.addAll(left);
-		allDiagonals.addAll(right);
+		allDiagonals.addAll(diagLeft);
+		allDiagonals.addAll(diagRight);
+		List<int[]> orthLeft = new ArrayList<>(), orthRight = new ArrayList<>(), orthTop = new ArrayList<>(), orthBottom = new ArrayList<>();
+		
+		orthLeft.add(new int[] {0, 1});		
+		orthRight.add(new int[] {0, -1});
+		orthTop.add(new int[] {1, 0});
+		orthBottom.add(new int[] {-1, 0});
+		
+		orthogonals.put(LEFT, orthLeft);
+		orthogonals.put(RIGHT, orthRight);
+		orthogonals.put(TOP, orthTop);
+		orthogonals.put(BOTTOM, orthBottom);
+		
+		allOrthogonals.addAll(orthLeft);
+		allOrthogonals.addAll(orthRight);
+		allOrthogonals.addAll(orthTop);
+		allOrthogonals.addAll(orthBottom);
 	}
 	
 	/**
@@ -104,7 +125,7 @@ public enum Side implements Serializable
 	}
 	
 	/**
-	 * Gets the diagonals for this side, primarily used for checkers.
+	 * Gets the diagonals for this side.
 	 * 
 	 * @param all If true, all diagonals are returned.
 	 * @return The diagonals 1 unit each direction away from this side, or all of the diagonals if <b>all</b> is true.
@@ -114,5 +135,18 @@ public enum Side implements Serializable
 		if(all)
 			return allDiagonals;
 		return diagonals.get(this);
+	}
+	
+	/**
+	 * Gets the orthogonals for this side.
+	 * 
+	 * @param all If true, all orthogonals are returned.
+	 * @return The orthogonals 1 unit away from this side, or all of the diagonals if <b>all</b> is true.
+	 */
+	public List<int[]> getOrthogonals(boolean all)
+	{
+		if(all)
+			return allOrthogonals;
+		return orthogonals.get(this);
 	}
 }

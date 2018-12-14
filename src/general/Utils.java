@@ -234,4 +234,9 @@ public class Utils
 			return original;
 		return new ImageIcon(original.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH));
 	}
+	
+	public static void noOp(Object o)
+	{
+		
+	}
 }

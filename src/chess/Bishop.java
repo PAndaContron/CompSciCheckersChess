@@ -8,7 +8,7 @@ import general.Piece;
 import general.Side;
 import general.Utils;
 
-public class Bishop extends Piece
+public class Bishop extends ChessPiece
 {
 	private static final long serialVersionUID = 1L;
 
@@ -25,7 +25,7 @@ public class Bishop extends Piece
 		}
 	}
 
-	public List<int[]> getMoves(Piece[][] board, int[] current)
+	public List<int[]> getMovesNoCheck(Piece[][] board, int[] current)
 	{
 		List<int[]> moves = new ArrayList<>();
 		List<int[]> diagonals = getSide().getDiagonals(true);
@@ -38,7 +38,7 @@ public class Bishop extends Piece
 				checkPos = Utils.add(checkPos, diagonal);
 				try
 				{
-					board[checkPos[0]][checkPos[1]].toString();
+					Utils.noOp(board[checkPos[0]][checkPos[1]]);
 				}
 				catch(ArrayIndexOutOfBoundsException e)
 				{

@@ -1,24 +1,71 @@
 package chess;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.List;
 
 import general.Piece;
 import general.Side;
+import general.Utils;
 
-public class Pawn extends Piece
+public class Pawn extends ChessPiece
 {
 	private static final long serialVersionUID = 1L;
 
 	public Pawn(Side s, Color c)
 	{
 		super(s, c);
-		// TODO Auto-generated constructor stub
+		if(c.equals(Color.WHITE))
+		{
+			setIcon("p");
+		}
+		else if(c.equals(Color.BLACK))
+		{
+			setIcon("P");
+		}
 	}
 
-	public List<int[]> getMoves(Piece[][] board, int[] current)
+	public List<int[]> getMovesNoCheck(Piece[][] board, int[] current)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		List<int[]> moves = new ArrayList<>();
+		
+		List<int[]> diagonals = getSide().getDiagonals(false);
+		List<int[]> orthogonals = getSide().getOrthogonals(false);
+		
+		for(int[] diagonal : diagonals)
+		{
+			int[] move = Utils.add(current, diagonal);
+			
+			try
+			{
+				if(board[move[0]][move[1]] != null)
+				{
+					moves.add(move);
+				}
+			}
+			catch(ArrayIndexOutOfBoundsException e)
+			{
+				continue;
+			}
+		}
+		
+		for(int[] orthogonal : orthogonals)
+		{
+			int[] move = Utils.add(current, orthogonal);
+			
+			try
+			{
+				if(board[move[0]][move[1]] == null)
+				{
+					moves.add(move);
+				}
+			}
+			catch(ArrayIndexOutOfBoundsException e)
+			{
+				continue;
+			}
+		}
+		
+		return moves;
 	}
 }

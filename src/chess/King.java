@@ -6,16 +6,25 @@ import java.util.List;
 import general.Piece;
 import general.Side;
 
-public class King extends Piece {
+public class King extends ChessPiece
+{
 	private static final long serialVersionUID = 1L;
 
-	public King(Side s, Color c) {
+	public King(Side s, Color c)
+	{
 		super(s, c);
-		// TODO Auto-generated constructor stub
+		if(c.equals(Color.WHITE))
+		{
+			setIcon("k");
+		}
+		else if(c.equals(Color.BLACK))
+		{
+			setIcon("K");
+		}
 	}
 
-	@Override
-	public List<int[]> getMoves(Piece[][] board, int[] current) {
+	public List<int[]> getMovesNoCheck(Piece[][] board, int[] current)
+	{
 		// TODO Auto-generated method stub
 		return null;
 	}

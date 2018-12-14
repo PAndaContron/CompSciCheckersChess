@@ -52,10 +52,19 @@ public abstract class ChessPiece extends Piece
 				}
 			}
 			
+			boolean check = false;
 			for(int[] newMove : allNewMoves)
 			{
-				
+				if(board[newMove[0]][newMove[1]] instanceof King)
+				{
+					check = true;
+					break;
+				}
 			}
+			if(check)
+				continue;
+			
+			moves.add(move);
 		}
 		
 		return moves;
