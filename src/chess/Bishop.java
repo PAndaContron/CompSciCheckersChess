@@ -36,14 +36,17 @@ public class Bishop extends ChessPiece
 			while(board[checkPos[0]][checkPos[1]] != this && board[checkPos[0]][checkPos[1]] != null)
 			{
 				checkPos = Utils.add(checkPos, diagonal);
+				
 				try
 				{
-					Utils.noOp(board[checkPos[0]][checkPos[1]]);
+					if(board[checkPos[0]][checkPos[1]] != null && board[checkPos[0]][checkPos[1]].getColor().equals(getColor()))
+						break;
 				}
 				catch(ArrayIndexOutOfBoundsException e)
 				{
 					break;
 				}
+				
 				moves.add(checkPos);
 			}
 		}

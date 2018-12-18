@@ -29,9 +29,6 @@ public abstract class ChessPiece extends Piece
 		
 		for(int[] move : movesNoCheck)
 		{
-			if(board[move[0]][move[1]] instanceof King)
-				continue;
-			
 			Piece[][] tempBoard = Utils.arrayCopy2D(board);
 			
 			tempBoard[move[0]][move[1]] = this;
@@ -45,7 +42,7 @@ public abstract class ChessPiece extends Piece
 				for(int j=0; j<row.length; j++)
 				{
 					Piece p = row[j];
-					if(p != null && p instanceof ChessPiece)
+					if(p != null && p instanceof ChessPiece && !p.getColor().equals(getColor()))
 					{
 						allNewMoves.addAll(((ChessPiece) p).getMovesNoCheck(tempBoard, new int[] {i, j}));
 					}
@@ -55,7 +52,7 @@ public abstract class ChessPiece extends Piece
 			boolean check = false;
 			for(int[] newMove : allNewMoves)
 			{
-				if(board[newMove[0]][newMove[1]] instanceof King)
+				if(board[newMove[0]][newMove[1]] instanceof King && board[newMove[0]][newMove[1]].getColor().equals(getColor()))
 				{
 					check = true;
 					break;

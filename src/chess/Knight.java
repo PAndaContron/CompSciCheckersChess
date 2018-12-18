@@ -47,7 +47,8 @@ public class Knight extends ChessPiece
 			
 			try
 			{
-				Utils.noOp(board[move[0]][move[1]]);
+				if(board[move[0]][move[1]] != null && board[move[0]][move[1]].getColor().equals(getColor()))
+					continue;
 			}
 			catch(ArrayIndexOutOfBoundsException e)
 			{

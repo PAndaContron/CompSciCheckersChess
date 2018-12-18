@@ -38,7 +38,7 @@ public class Pawn extends ChessPiece
 			
 			try
 			{
-				if(board[move[0]][move[1]] != null)
+				if(board[move[0]][move[1]] != null && !board[move[0]][move[1]].getColor().equals(getColor()))
 				{
 					moves.add(move);
 				}
