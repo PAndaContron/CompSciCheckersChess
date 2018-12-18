@@ -11,7 +11,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import general.Board;
-import general.GraphicsPlayer;
 import general.Player;
 import general.TurnSystem;
 
@@ -20,25 +19,31 @@ import general.TurnSystem;
  */
 public class GraphicsInterface
 {
-	private static JFrame game = new JFrame("Checkers");
-	private static Board board = new CheckerBoard();
+	private JFrame game = new JFrame("Checkers");
+	private Board board = new CheckerBoard();
 	
-	private static JButton move = new JButton("Move");
-	private static JLabel turn = new JLabel();
+	private JButton move = new JButton("Move");
+	private JLabel turn = new JLabel();
 	
-	private static Player player1 = new GraphicsPlayer("Player 1", Color.BLACK);
-	private static Player player2 = new GraphicsPlayer("Player 2", Color.RED);
+	private Player player1;
+	private Player player2;
 	
-	private static TurnSystem turnSystem = new TurnSystem(player1, player2);
-	private static Player currentPlayer = turnSystem.next();
+	private TurnSystem turnSystem;
+	private Player currentPlayer;
 	
 	//Variables related to detecting stalemates
-	private static int prevPieces = board.countPieces();
-	private static int movesSinceCap = 0;
-	private static boolean stalemate = true;
+	private int prevPieces = board.countPieces();
+	private int movesSinceCap = 0;
+	private boolean stalemate = true;
 
-	public static void main(String[] args)
+	public void run(Player... players)
 	{
+		player1 = players[0];
+		player2 = players[1];
+		
+		turnSystem = new TurnSystem(players);
+		currentPlayer = turnSystem.next();
+		
 		updateTurnLabel();
 		
 		move.addActionListener(new ActionListener()
@@ -99,12 +104,12 @@ public class GraphicsInterface
 		game.setVisible(true);
 	}
 
-	private static void updateTurnLabel()
+	private void updateTurnLabel()
 	{
 		turn.setText(currentPlayer + "'s turn!");
 	}
 	
-	private static void endGame(Player winner)
+	private void endGame(Player winner)
 	{
 		board.getPanel().repaint();
 		JOptionPane.showMessageDialog(game, winner==null ? "Stalemate!" : winner+" wins!", "Game Over!", JOptionPane.INFORMATION_MESSAGE);
