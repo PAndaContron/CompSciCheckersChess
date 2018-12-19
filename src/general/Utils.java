@@ -1,6 +1,12 @@
 package general;
 
 import java.awt.Image;
+import java.io.IOException;
+import java.lang.annotation.Annotation;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.SimpleFileVisitor;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -216,6 +222,28 @@ public class Utils
 		Date date = new Date();
 		DateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy HH.mm.ss");
 		return dateFormat.format(date);
+	}
+	
+	public static List<Class<? extends Object>> getClassesWith(Class<? extends Annotation> annotation)
+	{
+		String packageName = annotation.getPackage().getName();
+		String path = annotation.getResource(".").getPath();
+		Path packagePath = Paths.get(path).getParent();
+		
+		List<Class<? extends Object>> packageClasses = new ArrayList<>();
+		
+		try
+		{
+			Files.walkFileTree(packagePath, new SimpleFileVisitor<Path>()
+			{
+			});
+		}
+		catch (IOException e)
+		{
+			
+		}
+		
+		return packageClasses;
 	}
 	
 	/**

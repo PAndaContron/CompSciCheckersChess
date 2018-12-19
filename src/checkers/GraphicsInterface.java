@@ -12,11 +12,13 @@ import javax.swing.JOptionPane;
 
 import general.Board;
 import general.Player;
+import general.RegisterGame;
 import general.TurnSystem;
 
 /**
  * Runs the game using a GUI
  */
+@RegisterGame(name = "Checkers", music="opus")
 public class GraphicsInterface
 {
 	private JFrame game = new JFrame("Checkers");
@@ -36,12 +38,12 @@ public class GraphicsInterface
 	private int movesSinceCap = 0;
 	private boolean stalemate = true;
 
-	public void run(Player... players)
+	public void run(Player player1, Player player2)
 	{
-		player1 = players[0];
-		player2 = players[1];
+		this.player1 = player1;
+		this.player2 = player2;
 		
-		turnSystem = new TurnSystem(players);
+		turnSystem = new TurnSystem(this.player1, this.player2);
 		currentPlayer = turnSystem.next();
 		
 		updateTurnLabel();
@@ -57,9 +59,9 @@ public class GraphicsInterface
 					
 					//Victory conditions: One side loses when all its pieces are gone or can't make a valid move
 					if(board.countPieces(Color.BLACK) == 0 || !board.hasMoves(Color.BLACK))
-						endGame(player2);
+						endGame(GraphicsInterface.this.player2);
 					if(board.countPieces(Color.RED) == 0 || !board.hasMoves(Color.RED))
-						endGame(player1);
+						endGame(GraphicsInterface.this.player1);
 					
 					if(prevPieces != board.countPieces())
 					{
@@ -93,8 +95,6 @@ public class GraphicsInterface
 				board.getPanel().repaint();
 			}
 		});
-		
-		game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		game.getContentPane().add(board.getPanel(), BorderLayout.CENTER);
 		game.getContentPane().add(move, BorderLayout.SOUTH);

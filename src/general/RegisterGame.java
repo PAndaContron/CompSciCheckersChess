@@ -8,5 +8,6 @@ import java.lang.annotation.Target;
 public @interface RegisterGame
 {
 	String name() default "Untitled Game";
-	int numPlayers() default 2;
+	String music();
+	String method() default "run";
 }
