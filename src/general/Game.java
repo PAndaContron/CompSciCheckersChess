@@ -13,4 +13,11 @@ public @interface Game
 	String name() default "Untitled Game";
 	String music();
 	String method() default "run";
+	
+	String init() default "init";
+	String preMove() default "preMove";
+	String postMove() default "postMove";
+	
+	Class<? extends Board> boardClass() default Board.class;
+	int[] colors() default {};
 }

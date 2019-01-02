@@ -18,7 +18,7 @@ import general.TurnSystem;
 /**
  * Runs the game using a GUI
  */
-@Game(name = "Checkers", music="opus")
+@Game(name = "Checkers", music="music/opus.wav")
 public class GraphicsInterface
 {
 	private JFrame game = new JFrame("Checkers");

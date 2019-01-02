@@ -15,12 +15,10 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
-import java.util.stream.Stream;
 
 import javax.swing.ImageIcon;
 
@@ -236,8 +234,12 @@ public class Utils
 	{
 		Set<Class<? extends Object>> classes = new HashSet<>();
 		for(Class<? extends Object> clazz : getAllClasses())
+		{
 			if(clazz.isAnnotationPresent(annotation))
+			{
 				classes.add(clazz);
+			}
+		}
 		return classes;
 	}
 	
@@ -251,10 +253,13 @@ public class Utils
 		for(URL url : urls)
 		{
 			File path = null;
-			try {
+			try
+			{
 				path = new File(URLDecoder.decode(url.getPath(), "UTF-8"));
-			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
+			}
+			catch (UnsupportedEncodingException e)
+			{
+				//Should never happen but it won't compile if there's no catch statement
 				e.printStackTrace();
 			}
 			if(path.isDirectory())
@@ -263,10 +268,13 @@ public class Utils
 			}
 			else
 			{
-				try {
+				try
+				{
 					classes.addAll(getClassesFromJar(path));
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
+				}
+				catch (IOException e)
+				{
+					//Should never happen but it won't compile if there's no catch statement
 					e.printStackTrace();
 				}
 			}
@@ -274,10 +282,13 @@ public class Utils
 		
 		for(String pack : packages)
 		{
-			try {
+			try
+			{
 				classes.addAll(getClassesForPackage(pack));
-			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
+			}
+			catch (ClassNotFoundException e)
+			{
+				//Should never happen but it won't compile if there's no catch statement
 				e.printStackTrace();
 			}
 		}
@@ -297,10 +308,13 @@ public class Utils
 			if(name.endsWith(".class"))
 			{
 				String className = name.substring(0, name.length()-6).replace('/', '.');
-				try {
+				try
+				{
 					classes.add(Utils.class.getClassLoader().loadClass(className));
-				} catch (ClassNotFoundException e) {
-					// TODO Auto-generated catch block
+				}
+				catch (ClassNotFoundException e)
+				{
+					//Should never happen but it won't compile if there's no catch statement
 					e.printStackTrace();
 				}
 			}
@@ -335,47 +349,53 @@ public class Utils
 		return packages;
 	}
 	
-	public static List<Class<? extends Object>> getClassesForPackage(String pckgname) throws ClassNotFoundException
+	public static List<Class<? extends Object>> getClassesForPackage(String packName) throws ClassNotFoundException
 	{
-		// This will hold a list of directories matching the pckgname. There may
-		// be more than one if a package is split over multiple jars/paths
 		ArrayList<File> directories = new ArrayList<File>();
-		try {
+		try
+		{
 			ClassLoader cld = Thread.currentThread().getContextClassLoader();
-			if (cld == null) {
+			if (cld == null)
+			{
 				throw new ClassNotFoundException("Can't get class loader.");
 			}
-			String path = pckgname.replace('.', '/');
-			// Ask for all resources for the path
+			String path = packName.replace('.', '/');
 			Enumeration<URL> resources = cld.getResources(path);
-			while (resources.hasMoreElements()) {
+			while (resources.hasMoreElements())
+			{
 				directories.add(new File(URLDecoder.decode(resources.nextElement().getPath(), "UTF-8")));
 			}
-		} catch (NullPointerException x) {
-			throw new ClassNotFoundException(
-					pckgname + " does not appear to be a valid package (Null pointer exception)");
-		} catch (UnsupportedEncodingException encex) {
-			throw new ClassNotFoundException(
-					pckgname + " does not appear to be a valid package (Unsupported encoding)");
-		} catch (IOException ioex) {
-			throw new ClassNotFoundException("IOException was thrown when trying to get all resources for " + pckgname);
+		}
+		catch (NullPointerException x)
+		{
+			throw new ClassNotFoundException(packName + " does not appear to be a valid package (Null pointer exception)");
+		}
+		catch (UnsupportedEncodingException encex)
+		{
+			throw new ClassNotFoundException(packName + " does not appear to be a valid package (Unsupported encoding)");
+		}
+		catch (IOException ioex)
+		{
+			throw new ClassNotFoundException("IOException was thrown when trying to get all resources for " + packName);
 		}
 
 		ArrayList<Class<? extends Object>> classes = new ArrayList<>();
-		// For every directory identified capture all the .class files
-		for (File directory : directories) {
-			if (directory.exists()) {
-				// Get the list of the files contained in the package
+		for (File directory : directories)
+		{
+			if (directory.exists())
+			{
 				String[] files = directory.list();
-				for (String file : files) {
-					// we are only interested in .class files
-					if (file.endsWith(".class")) {
-						// removes the .class extension
-						try {
-							classes.add(Class.forName(pckgname + '.' + file.substring(0, file.length() - 6)));
-						} catch (NoClassDefFoundError e) {
-							// do nothing. this class hasn't been found by the
-							// loader, and we don't care.
+				for (String file : files)
+				{
+					if (file.endsWith(".class"))
+					{
+						try
+						{
+							classes.add(Class.forName(packName + '.' + file.substring(0, file.length() - 6)));
+						}
+						catch (NoClassDefFoundError e)
+						{
+							//Do nothing
 						}
 					}
 				}
