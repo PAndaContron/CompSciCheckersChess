@@ -1,18 +1,26 @@
 package general;
 
 import java.awt.Image;
+import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.lang.annotation.Annotation;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.SimpleFileVisitor;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.net.URLDecoder;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Enumeration;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
+import java.util.stream.Stream;
 
 import javax.swing.ImageIcon;
 
@@ -224,26 +232,156 @@ public class Utils
 		return dateFormat.format(date);
 	}
 	
-	public static List<Class<? extends Object>> getClassesWith(Class<? extends Annotation> annotation)
+	public static Set<Class<? extends Object>> getClassesWith(Class<? extends Annotation> annotation)
 	{
-		String packageName = annotation.getPackage().getName();
-		String path = annotation.getResource(".").getPath();
-		Path packagePath = Paths.get(path).getParent();
+		Set<Class<? extends Object>> classes = new HashSet<>();
+		for(Class<? extends Object> clazz : getAllClasses())
+			if(clazz.isAnnotationPresent(annotation))
+				classes.add(clazz);
+		return classes;
+	}
+	
+	public static Set<Class<? extends Object>> getAllClasses()
+	{
+		URLClassLoader uc = (URLClassLoader) Utils.class.getClassLoader();
+		URL[] urls = uc.getURLs();
+		Set<Class<? extends Object>> classes = new HashSet<>();
+		Set<String> packages = new HashSet<>();
 		
-		List<Class<? extends Object>> packageClasses = new ArrayList<>();
-		
-		try
+		for(URL url : urls)
 		{
-			Files.walkFileTree(packagePath, new SimpleFileVisitor<Path>()
+			File path = null;
+			try {
+				path = new File(URLDecoder.decode(url.getPath(), "UTF-8"));
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if(path.isDirectory())
 			{
-			});
-		}
-		catch (IOException e)
-		{
-			
+				packages.addAll(getPackages(path));
+			}
+			else
+			{
+				try {
+					classes.addAll(getClassesFromJar(path));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		}
 		
-		return packageClasses;
+		for(String pack : packages)
+		{
+			try {
+				classes.addAll(getClassesForPackage(pack));
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		return classes;
+	}
+	
+	public static Set<Class<? extends Object>> getClassesFromJar(File jarFile) throws IOException
+	{
+		Set<Class<? extends Object>> classes = new HashSet<>();
+		JarFile jar = new JarFile(jarFile);
+		Enumeration<JarEntry> entries = jar.entries();
+		while(entries.hasMoreElements())
+		{
+			JarEntry entry = entries.nextElement();
+			String name = entry.getName();
+			if(name.endsWith(".class"))
+			{
+				String className = name.substring(0, name.length()-6).replace('/', '.');
+				try {
+					classes.add(Utils.class.getClassLoader().loadClass(className));
+				} catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		jar.close();
+		return classes;
+	}
+	
+	public static Set<String> getPackages(File dir)
+	{
+		return getPackages(dir, "");
+	}
+	
+	public static Set<String> getPackages(File dir, String parent)
+	{
+		if(!dir.isDirectory() || !dir.exists())
+			return null;
+		
+		Set<String> packages = new HashSet<>();
+		for(File f : dir.listFiles())
+		{
+			if(f.isDirectory())
+			{
+				String name = f.getName();
+				if(!parent.equals(""))
+					name = parent + "." + name;
+				packages.add(name);
+				packages.addAll(getPackages(f, name));
+			}
+		}
+		
+		return packages;
+	}
+	
+	public static List<Class<? extends Object>> getClassesForPackage(String pckgname) throws ClassNotFoundException
+	{
+		// This will hold a list of directories matching the pckgname. There may
+		// be more than one if a package is split over multiple jars/paths
+		ArrayList<File> directories = new ArrayList<File>();
+		try {
+			ClassLoader cld = Thread.currentThread().getContextClassLoader();
+			if (cld == null) {
+				throw new ClassNotFoundException("Can't get class loader.");
+			}
+			String path = pckgname.replace('.', '/');
+			// Ask for all resources for the path
+			Enumeration<URL> resources = cld.getResources(path);
+			while (resources.hasMoreElements()) {
+				directories.add(new File(URLDecoder.decode(resources.nextElement().getPath(), "UTF-8")));
+			}
+		} catch (NullPointerException x) {
+			throw new ClassNotFoundException(
+					pckgname + " does not appear to be a valid package (Null pointer exception)");
+		} catch (UnsupportedEncodingException encex) {
+			throw new ClassNotFoundException(
+					pckgname + " does not appear to be a valid package (Unsupported encoding)");
+		} catch (IOException ioex) {
+			throw new ClassNotFoundException("IOException was thrown when trying to get all resources for " + pckgname);
+		}
+
+		ArrayList<Class<? extends Object>> classes = new ArrayList<>();
+		// For every directory identified capture all the .class files
+		for (File directory : directories) {
+			if (directory.exists()) {
+				// Get the list of the files contained in the package
+				String[] files = directory.list();
+				for (String file : files) {
+					// we are only interested in .class files
+					if (file.endsWith(".class")) {
+						// removes the .class extension
+						try {
+							classes.add(Class.forName(pckgname + '.' + file.substring(0, file.length() - 6)));
+						} catch (NoClassDefFoundError e) {
+							// do nothing. this class hasn't been found by the
+							// loader, and we don't care.
+						}
+					}
+				}
+			}
+		}
+		return classes;
 	}
 	
 	/**

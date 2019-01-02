@@ -12,13 +12,13 @@ import javax.swing.JOptionPane;
 
 import general.Board;
 import general.Player;
-import general.RegisterGame;
+import general.Game;
 import general.TurnSystem;
 
 /**
  * Runs the game using a GUI
  */
-@RegisterGame(name = "Checkers", music="opus")
+@Game(name = "Checkers", music="opus")
 public class GraphicsInterface
 {
 	private JFrame game = new JFrame("Checkers");
