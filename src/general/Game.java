@@ -10,14 +10,14 @@ import java.lang.annotation.Target;
 @Target(TYPE)
 public @interface Game
 {
-	String name() default "Untitled Game";
 	String music();
-	String method() default "run";
 	
 	String init() default "init";
 	String preMove() default "preMove";
 	String postMove() default "postMove";
 	
-	Class<? extends Board> boardClass() default Board.class;
-	int[] colors() default {};
+	Class<? extends Board> boardClass();
+	int[] colors();
+	Class<? extends Player>[] playersGraphics();
+	Class<? extends Player>[] playersTerminal();
 }

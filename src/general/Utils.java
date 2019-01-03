@@ -127,6 +127,16 @@ public class Utils
 		return -1;
 	}
 	
+	public static <T> int arrayIndexOf(T[] arr, T key)
+	{
+		for(int i=0; i<arr.length; i++)
+		{
+			if(arr[i] == key)
+				return i;
+		}
+		return -1;
+	}
+	
 	/**
 	 * Computes the average of each element of <b>a</b> and <b>b</b> into a new array of the same size.
 	 * <br>

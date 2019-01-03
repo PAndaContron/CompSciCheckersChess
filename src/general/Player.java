@@ -6,6 +6,7 @@ import java.io.Serializable;
 /**
  * Represents a player, who can make moves on a {@link Board}.
  */
+@Name
 public abstract class Player implements Serializable
 {
 	private static final long serialVersionUID = 1L;
@@ -53,4 +54,15 @@ public abstract class Player implements Serializable
 	 * @param b The board which the game is being played on.
 	 */
 	abstract public void makeMove(Board b);
+	
+	/**
+	 * Makes a choice about something
+	 * 
+	 * @param b The board which the game is being played on, needed for AI players.
+	 * @param prompt The question to ask the player
+	 * @param choices The possible choices
+	 * 
+	 * @return The index of the choice the player made
+	 */
+	abstract public int makeChoice(Board b, String prompt, Object[] choices);
 }

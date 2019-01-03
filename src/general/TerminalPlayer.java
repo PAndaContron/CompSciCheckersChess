@@ -7,6 +7,7 @@ import java.util.Scanner;
 /**
  * Represents a human player playing the game through a terminal.
  */
+@Name("Human Player")
 public class TerminalPlayer extends Player
 {
 	private static final long serialVersionUID = 1L;
@@ -65,6 +66,34 @@ public class TerminalPlayer extends Player
 			catch(Exception e)
 			{
 				System.out.println("That's not a valid move!");
+			}
+		}
+	}
+	
+	public int makeChoice(Board b, String prompt, Object[] choices)
+	{
+		System.out.printf("%s: %s%n", toString(), prompt);
+		System.out.println("Enter the number of your choice: ");
+		for(int i=0; i<choices.length; i++)
+		{
+			System.out.printf("%2d - %s", i+1, choices[i]);
+		}
+		while(true)
+		{
+			try
+			{
+				int i = Integer.parseInt(scan.nextLine().trim());
+				if(i > choices.length || i <= 0)
+					throw new IllegalArgumentException();
+				return i-1;
+			}
+			catch(NumberFormatException e)
+			{
+				System.out.println("You must enter an integer.");
+			}
+			catch(IllegalArgumentException e)
+			{
+				System.out.println("The number is outside of the range.");
 			}
 		}
 	}

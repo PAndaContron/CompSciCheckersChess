@@ -3,9 +3,12 @@ package general;
 import java.awt.Color;
 import java.util.Arrays;
 
+import javax.swing.JOptionPane;
+
 /**
  * Represents a player interacting with the game through a GUI.
  */
+@Name("Human Player")
 public class GraphicsPlayer extends Player
 {
 	private static final long serialVersionUID = 1L;
@@ -22,5 +25,11 @@ public class GraphicsPlayer extends Player
 			b.move(Arrays.copyOf(move, 2), Arrays.copyOfRange(move, 2, move.length));
 		else
 			throw new IllegalArgumentException("Wrong color");
+	}
+	
+	public int makeChoice(Board b, String prompt, Object[] choices)
+	{
+		Object choice = JOptionPane.showInputDialog(null, prompt, this+": Decision", JOptionPane.QUESTION_MESSAGE, null, choices, choices[0]);
+		return Utils.arrayIndexOf(choices, choice);
 	}
 }
