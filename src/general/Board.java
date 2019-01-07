@@ -261,7 +261,7 @@ public abstract class Board implements Serializable
 			out += Utils.ALPHABET[i];
 		out += "\n";
 		
-		for(int i=0; i<board.length; i++)
+		for(int i=board.length-1; i>=0; i--)
 		{
 			//Chess coordinate row headers
 			out += (i+1);
