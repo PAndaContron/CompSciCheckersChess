@@ -36,7 +36,7 @@ public class Queen extends ChessPiece
 		for(int[] direction : directions)
 		{
 			int[] checkPos = current;
-			while(board[checkPos[0]][checkPos[1]] != this && board[checkPos[0]][checkPos[1]] != null)
+			while(!(board[checkPos[0]][checkPos[1]] != this && board[checkPos[0]][checkPos[1]] != null))
 			{
 				checkPos = Utils.add(checkPos, direction);
 				

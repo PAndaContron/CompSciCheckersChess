@@ -59,6 +59,17 @@ public class Pawn extends ChessPiece
 				{
 					moves.add(move);
 				}
+				
+				int[] behind = Utils.subtract(current, orthogonal);
+				if(Side.getSide(behind, board.length) == getSide())
+				{
+					//Double jump is possible
+					move = Utils.add(move, orthogonal);
+					if(board[move[0]][move[1]] == null)
+					{
+						moves.add(move);
+					}
+				}
 			}
 			catch(ArrayIndexOutOfBoundsException e)
 			{

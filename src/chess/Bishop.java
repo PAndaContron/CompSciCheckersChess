@@ -33,7 +33,7 @@ public class Bishop extends ChessPiece
 		for(int[] diagonal : diagonals)
 		{
 			int[] checkPos = current;
-			while(board[checkPos[0]][checkPos[1]] != this && board[checkPos[0]][checkPos[1]] != null)
+			while(!(board[checkPos[0]][checkPos[1]] != this && board[checkPos[0]][checkPos[1]] != null))
 			{
 				checkPos = Utils.add(checkPos, diagonal);
 				

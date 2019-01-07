@@ -53,6 +53,29 @@ public class Utils
 	}
 	
 	/**
+	 * Subtracts each element in <b>b</b> from each element in <b>a</b> into a third array of the same size.
+	 * <br>
+	 * This is most useful for subtracting vectors to calculate positions on a {@link Board}.
+	 * 
+	 * @param a The array to subtract from.
+	 * @param b The array to subtract.
+	 * 
+	 * @return A new array where the element at each index is the difference between the element at that index
+	 * in <b>a</b> and <b>b</b>.
+	 * 
+	 * @throws IllegalArgumentException if <b>a</b> and <b>b</b> are not the same lengths.
+	 */
+	public static int[] subtract(int[] a, int[] b)
+	{
+		if(a.length != b.length)
+			throw new IllegalArgumentException();
+		int[] c = new int[a.length];
+		for(int i=0; i<c.length; i++)
+			c[i] = a[i] - b[i];
+		return c;
+	}
+
+	/**
 	 * Appends <b>b</b> to the end of <b>a</b>.
 	 * 
 	 * @param a The first array.

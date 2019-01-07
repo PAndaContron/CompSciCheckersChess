@@ -33,7 +33,7 @@ public class Rook extends ChessPiece
 		for(int[] orthogonal : orthogonals)
 		{
 			int[] checkPos = current;
-			while(board[checkPos[0]][checkPos[1]] != this && board[checkPos[0]][checkPos[1]] != null)
+			while(!(board[checkPos[0]][checkPos[1]] != this && board[checkPos[0]][checkPos[1]] != null))
 			{
 				checkPos = Utils.add(checkPos, orthogonal);
 				
@@ -46,6 +46,7 @@ public class Rook extends ChessPiece
 				{
 					break;
 				}
+				System.out.printf("Valid move for %d, %d: %d, %d%n", current[0], current[1], checkPos[0], checkPos[1]);
 				moves.add(checkPos);
 			}
 		}
