@@ -46,7 +46,6 @@ public class Rook extends ChessPiece
 				{
 					break;
 				}
-				System.out.printf("Valid move for %d, %d: %d, %d%n", current[0], current[1], checkPos[0], checkPos[1]);
 				moves.add(checkPos);
 			}
 		}
