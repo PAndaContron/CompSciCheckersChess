@@ -1,6 +1,7 @@
 package checkers;
 
 import general.Game;
+import general.GameInstance;
 import general.GraphicsPlayer;
 import general.Name;
 import general.Player;
@@ -17,17 +18,17 @@ import general.TerminalPlayer;
 @Name("Checkers")
 public class CheckersLogic
 {
-	public void init()
+	public void init(GameInstance gameInstance)
 	{
 		
 	}
 	
-	public void preMove(Player currentPlayer)
+	public void preMove(Player currentPlayer, GameInstance gameInstance)
 	{
 		
 	}
 	
-	public void postMove(Player previousPlayer)
+	public void postMove(Player previousPlayer, GameInstance gameInstance)
 	{
 		
 	}
