@@ -45,8 +45,8 @@ public class TerminalPlayer extends Player
 				String s = scan.nextLine();
 				
 				//Cheats for debugging
-//				if(s.equals("skip"))
-//					return;
+				if(s.equals("skip"))
+					return;
 //				if(s.equals("hasMoves"))
 //				{
 //					System.out.println(b.hasMoves(getColor()));
@@ -65,6 +65,7 @@ public class TerminalPlayer extends Player
 			//actual bugs, so if there is any kind of Exception thrown, it must be the user's input.
 			catch(Exception e)
 			{
+//				e.printStackTrace();
 				System.out.println("That's not a valid move!");
 			}
 		}
@@ -76,7 +77,7 @@ public class TerminalPlayer extends Player
 		System.out.println("Enter the number of your choice: ");
 		for(int i=0; i<choices.length; i++)
 		{
-			System.out.printf("%2d - %s", i+1, choices[i]);
+			System.out.printf("%2d - %s%n", i+1, choices[i]);
 		}
 		while(true)
 		{
