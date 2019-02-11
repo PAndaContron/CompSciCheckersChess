@@ -49,6 +49,9 @@ public class TerminalInterface
 			System.out.println("How did we get here?");
 		}
 		
+		if(args.length > 0)
+			System.out.println(b);
+		
 		scan.close();
 	}
 
