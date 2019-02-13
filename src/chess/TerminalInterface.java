@@ -31,15 +31,21 @@ public class TerminalInterface
 		
 		try
 		{
-			while(args.length == 0 || scan.hasNextLine())
+			while(true)
 			{
 				Player next = turns.next();
-				next.makeMove(b);
-
-				if(!b.hasMoves(Color.WHITE) || !b.hasMoves(Color.BLACK))
+				
+				if(!b.hasMoves(next.getColor()))
 				{
+					if(((ChessBoard)b).inCheck(next.getColor()))
+						throw new GameOverException(turns.next());
 					throw new GameOverException(null);
 				}
+				
+				if(((ChessBoard)b).inCheck(next.getColor()))
+					System.out.println(next + " is in check!");
+				
+				next.makeMove(b);
 			}
 		}
 		catch(GameOverException e)
@@ -50,9 +56,6 @@ public class TerminalInterface
 			else
 				System.out.printf("Checkmate - %s wins!%n",e.getWinner());
 		}
-		
-//		if(args.length > 0)
-//			System.out.println(b);
 		
 		scan.close();
 	}

@@ -1,6 +1,7 @@
 package chess;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.List;
 
 import general.Board;
@@ -57,5 +58,33 @@ public class ChessBoard extends Board
 		{
 			throw new IllegalArgumentException("Invalid move");
 		}
+	}
+	
+	public boolean inCheck(Color c)
+	{
+		List<int[]> allMoves = new ArrayList<>();
+		
+		for(int i=0; i<board.length; i++)
+		{
+			Piece[] row = board[i];
+			for(int j=0; j<row.length; j++)
+			{
+				Piece p = row[j];
+				if(p != null && p instanceof ChessPiece && !p.getColor().equals(c))
+				{
+					allMoves.addAll(((ChessPiece) p).getMovesNoCheck(board, new int[] {i, j}));
+				}
+			}
+		}
+		
+		for(int[] newMove : allMoves)
+		{
+			if(board[newMove[0]][newMove[1]] instanceof King && board[newMove[0]][newMove[1]].getColor().equals(c))
+			{
+				return true;
+			}
+		}
+		
+		return false;
 	}
 }
