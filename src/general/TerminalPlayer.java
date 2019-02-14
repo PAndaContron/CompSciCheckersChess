@@ -45,8 +45,8 @@ public class TerminalPlayer extends Player
 				String s = scan.nextLine();
 				
 				//Cheats for debugging
-				if(s.equals("skip"))
-					return;
+//				if(s.equals("skip"))
+//					return;
 //				if(s.equals("hasMoves"))
 //				{
 //					System.out.println(b.hasMoves(getColor()));
@@ -73,7 +73,7 @@ public class TerminalPlayer extends Player
 			//actual bugs, so if there is any kind of Exception thrown, it must be the user's input.
 			catch(Exception e)
 			{
-				e.printStackTrace();
+//				e.printStackTrace();
 				System.out.println("That's not a valid move!");
 			}
 		}
