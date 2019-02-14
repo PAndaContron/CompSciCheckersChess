@@ -79,6 +79,48 @@ public class ChessBoard extends Board
 			}
 			super.move(from, to);
 		}
+		else if(p instanceof King && board[to[0]][to[1]] != null &&
+				board[to[0]][to[1]] instanceof Rook &&
+				board[to[0]][to[1]].getColor().equals(p.getColor()) &&
+				!p.hasMoved() && !board[to[0]][to[1]].hasMoved())
+		{
+			Piece rook = board[to[0]][to[1]];
+			int dir = to[1] > from[1] ? 1 : -1;
+			for(int i=from[1]+dir; i != to[1]; i += dir)
+			{
+				if(board[to[0]][i] != null)
+					throw new IllegalArgumentException("Invalid move");
+			}
+			
+			int[] pos1 = {to[0], from[1]+dir};
+			int[] pos2 = {to[0], pos1[1]+dir};
+			
+			super.move(from, pos1);
+			if(inCheck(p.getColor()))
+			{
+				super.move(pos1, from);
+				p.setMoved(false);
+				throw new IllegalArgumentException("Invalid move");
+			}
+
+			super.move(pos1, pos2);
+			if(inCheck(p.getColor()))
+			{
+				super.move(pos2, from);
+				p.setMoved(false);
+				throw new IllegalArgumentException("Invalid move");
+			}
+
+			super.move(to, pos1);
+			if(inCheck(p.getColor()))
+			{
+				super.move(pos1, to);
+				super.move(pos2, from);
+				p.setMoved(false);
+				rook.setMoved(false);
+				throw new IllegalArgumentException("Invalid move");
+			}
+		}
 		else if(p instanceof Pawn)
 		{
 			List<int[]> moves = new ArrayList<>();
