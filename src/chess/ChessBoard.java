@@ -2,6 +2,7 @@ package chess;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import general.Board;
@@ -13,6 +14,8 @@ import general.Utils;
 public class ChessBoard extends Board
 {
 	private static final long serialVersionUID = 1L;
+	
+	private int[][][] enPassant = new int[8][8][0];
 
 	public ChessBoard()
 	{
@@ -53,12 +56,80 @@ public class ChessBoard extends Board
 		List<int[]> valid = p.getMoves(board, from);
 		if(Utils.indexOfArray(valid, to)>-1)
 		{
+			if(p instanceof Pawn)
+			{
+				if(Math.abs(from[0]-to[0]) == 2)
+				{
+					int[] mid = {(from[0]+to[0])/2, to[1]};
+					enPassant[mid[0]][mid[1]] = Arrays.copyOf(to, 2);
+					super.move(from, to);
+					return;
+				}
+				else
+				{
+					for(int i=0; i<8; i++)
+					{
+						for(int j=0; j<8; j++)
+						{
+							if(Arrays.equals(enPassant[i][j], to))
+								enPassant[i][j] = new int[0];
+						}
+					}
+				}
+			}
 			super.move(from, to);
+		}
+		else if(p instanceof Pawn)
+		{
+			List<int[]> moves = new ArrayList<>();
+			p.getSide().getDiagonals(false).forEach(m ->
+			{
+				int[] move = Utils.add(from, m);
+				try
+				{
+					Utils.noOp(board[move[0]][move[1]]);
+				}
+				catch(ArrayIndexOutOfBoundsException e)
+				{
+					return;
+				}
+				moves.add(move);
+			});
+			
+			if(Utils.indexOfArray(moves, to) > -1)
+			{
+				int[] capture = enPassant[to[0]][to[1]];
+				if(capture != null && capture.length > 0 &&
+						!board[capture[0]][capture[1]].getColor().equals(p.getColor()))
+				{
+					enPassant[to[0]][to[1]] = new int[0];
+					super.move(from, to);
+					Piece captured = board[capture[0]][capture[1]];
+					board[capture[0]][capture[1]] = null;
+					if(inCheck(p.getColor()))
+					{
+						super.move(to, from);
+						enPassant[to[0]][to[1]] = capture;
+						board[capture[0]][capture[1]] = captured;
+						throw new IllegalArgumentException("Invalid move");
+					}
+				}
+				else
+				{
+					throw new IllegalArgumentException("Invalid move");
+				}
+			}
+			else
+			{
+				throw new IllegalArgumentException("Invalid move");
+			}
 		}
 		else
 		{
 			throw new IllegalArgumentException("Invalid move");
 		}
+		
+		enPassant = new int[8][8][0];
 	}
 	
 	public boolean inCheck(Color c)
