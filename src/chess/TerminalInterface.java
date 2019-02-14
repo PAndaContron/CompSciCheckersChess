@@ -46,6 +46,8 @@ public class TerminalInterface
 					System.out.println(next + " is in check!");
 				
 				next.makeMove(b);
+				
+				((ChessBoard)b).promotePiece(next);
 			}
 		}
 		catch(GameOverException e)

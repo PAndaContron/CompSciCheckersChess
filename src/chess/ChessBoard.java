@@ -6,6 +6,7 @@ import java.util.List;
 
 import general.Board;
 import general.Piece;
+import general.Player;
 import general.Side;
 import general.Utils;
 
@@ -86,5 +87,52 @@ public class ChessBoard extends Board
 		}
 		
 		return false;
+	}
+	
+	public void promotePiece(Player p)
+	{
+		for(int i=0; i<board.length; i++)
+		{
+			for(int j=0; j<board.length; j++)
+			{
+				Piece current = board[i][j];
+				
+				if(current == null)
+					continue;
+				
+				if(current.getColor() != p.getColor())
+					continue;
+				
+				if(!(current instanceof Pawn))
+					continue;
+				
+				if(Side.getSide(new int[] {i, j}, board.length) == current.getSide().getOpposite())
+				{
+					int choice = p.makeChoice(this, "Promote pawn to:", new String[]
+					{
+						"Queen",
+						"Knight",
+						"Rook",
+						"Bishop"
+					});
+					
+					switch(choice)
+					{
+						case 0:
+							board[i][j] = new Queen(current.getSide(), p.getColor());
+							break;
+						case 1:
+							board[i][j] = new Knight(current.getSide(), p.getColor());
+							break;
+						case 2:
+							board[i][j] = new Rook(current.getSide(), p.getColor());
+							break;
+						case 3:
+							board[i][j] = new Bishop(current.getSide(), p.getColor());
+							break;
+					}
+				}
+			}
+		}
 	}
 }
